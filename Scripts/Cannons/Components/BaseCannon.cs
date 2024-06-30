@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public abstract class BaseCannon : Node2D
+public class BaseCannon : Node2D
 {
     [Export]
     protected int WaveRange = 15;        // Maximum angle in degrees that the cannon
@@ -26,6 +26,8 @@ public abstract class BaseCannon : Node2D
         Indicator = GetNode<Indicator>("Indicator");
 
         WaveInit = RotationDegrees;
+
+        Receiver.Connect( "MarbleReceived", this, nameof(_OnReceiverMarbleReceived) );
     }
 
     public override void _Process(float delta)
@@ -35,5 +37,11 @@ public abstract class BaseCannon : Node2D
         WaveTime += delta;
         WaveAngle = WaveInit + Math.Sin( WaveTime * WaveFrequency/60 * Math.PI*2 ) * WaveRange;
         RotationDegrees = (float)WaveAngle;
+    }
+
+    private void _OnReceiverMarbleReceived( int flags )
+    {
+        GD.Print("Nyaa~");
+        Spawner.StartFiring();
     }
 }

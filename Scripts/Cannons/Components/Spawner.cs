@@ -1,7 +1,90 @@
 using System;
 using Godot;
 
+/*
+    A Spawner handles firing the payload of a cannon. Payloads are PackedScenes
+    declared in the exported variable Payload. It also signals out when it
+    starts and stops firing.
+*/
 public class Spawner : Node2D
 {
-    
+    [Signal]
+    public delegate void StartedFiring();   // Attack sequence begun
+    [Signal]
+    public delegate void StoppedFiring();   // Attack sequence ended
+    [Signal]
+    public delegate void Fired();           // A payload was spawned
+
+    // The Node2D projectile spawned by this Spawner. Note that this could be anything
+    // as long as it is a PackedScene; simple bullets to complex contraptions that even
+    // have their own cannons are all possible.
+    [Export]
+    public PackedScene Payload { get; private set; }
+
+    [Export]
+    public int SPM { get; private set; } = 60;          // Shots per minute, assuming this Spawner
+                                                        // will call Fire() multiple times per
+                                                        // BeginFiring() call.
+    [Export]
+    public int AmmoCost { get; private set; } = 1;  // Amount of ammo deducted per payload spawn.
+                                                    // Spawner will emit StoppedFiring when this
+                                                    // cost cannot be met.
+
+    public int Ammo { get; private set; } = 10;
+    public double Cooldown { get; private set; } = 0;
+    public bool Firing { get; private set; } = false;
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        // Only Node2D inherited nodes can be payloads.
+        var PayloadAs2D = Payload.Instance() as Node2D;
+        if ( PayloadAs2D == null )
+            GD.PushError( String.Format("Spawner of '{0}' does not have payload that inherits from Node2D.", this.GetParent().Name) );
+    }
+
+    public override void _Process(float delta)
+    {
+        base._Process(delta);
+
+        if ( Cooldown > 0 )
+            Cooldown -= delta;
+        
+        if ( Firing && Cooldown <= 0 )
+        {
+            Firing = Fire();
+            if ( !Firing )      // Ammo has just ran out.
+                EmitSignal( nameof(StoppedFiring) );
+        }
+    }
+
+    public void AddAmmo( int amt ) { Ammo += amt; }
+
+    public void StartFiring()
+    {
+        if ( Ammo >= AmmoCost )
+        {
+            Firing = true;
+            EmitSignal( nameof(StartedFiring) );
+        }
+    }
+
+    private bool Fire()
+    {
+        if ( Ammo >= AmmoCost )
+        {
+            var payload = Payload.Instance() as Node2D;
+            payload.GlobalPosition = GlobalPosition;
+            payload.GlobalRotation = GlobalRotation;
+            GetNode("/root").AddChild( payload );
+
+            Ammo -= AmmoCost;
+            Cooldown = 1 / ( SPM/60 );
+            EmitSignal( nameof(Fired) );
+            return true;
+        }
+        else
+            return false;
+    }
 }
