@@ -4,16 +4,16 @@ using System;
 public class BaseCannon : Node2D
 {
     [Export]
-    protected int WaveRange = 15;        // Maximum angle in degrees that the cannon
-                                         // turns during its sin wave.
+    protected int WaveRange = 15;       // Maximum angle in degrees that the cannon
+                                        // turns during its sin wave.
     [Export]
-    protected int WaveFrequency = 5;   // Number of sin wave cycles per minute.
+    protected int WaveFrequency = 5;    // Number of sin wave cycles per minute.
 
-    protected Receiver Receiver;    // Receiver is expected to emit signals
-                                    // when a marble collides with it.
-    protected Spawner Spawner;      // Spawner handles firing the cannon's payload.
+    protected Receiver Receiver;        // Receiver is expected to emit signals
+                                        // when a marble collides with it.
+    protected Spawner Spawner;          // Spawner handles firing the cannon's payload.
     protected Indicator Indicator;      // Indicator is optional, and displays cannon
-                                    // status information to the user.
+                                        // status information to the user.
     
     protected double WaveAngle = 0;
     protected float WaveTime = 0;
@@ -28,6 +28,8 @@ public class BaseCannon : Node2D
         WaveInit = RotationDegrees;
 
         Receiver.Connect( "MarbleReceived", this, nameof(_OnReceiverMarbleReceived) );
+
+        GetNode<ColorPalettes>("/root/ColorPalettes").ApplyPaletteTo( this, true );
     }
 
     public override void _Process(float delta)

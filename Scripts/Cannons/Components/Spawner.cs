@@ -15,22 +15,22 @@ public class Spawner : Node2D
     [Signal]
     public delegate void Fired();           // A payload was spawned
 
-    // The Node2D projectile spawned by this Spawner. Note that this could be anything
-    // as long as it is a PackedScene; simple bullets to complex contraptions that even
-    // have their own cannons are all possible.
+    // Payload is the Node2D projectile spawned by this Spawner. Note that this
+    // could be anything as long as it is a PackedScene; simple bullets to 
+    // complex contraptions that even have their own cannons are all valid.
     [Export]
     public PackedScene Payload { get; private set; }
 
     [Export]
-    public int SPM { get; private set; } = 60;          // Shots per minute, assuming this Spawner
-                                                        // will call Fire() multiple times per
-                                                        // BeginFiring() call.
+    public int SPM { get; private set; } = 60;      // Shots per minute, assuming this Spawner
+                                                    // will call Fire() multiple times per
+                                                    // BeginFiring() call.
     [Export]
     public int AmmoCost { get; private set; } = 1;  // Amount of ammo deducted per payload spawn.
                                                     // Spawner will emit StoppedFiring when this
                                                     // cost cannot be met.
 
-    public int Ammo { get; private set; } = 10;
+    public int Ammo { get; private set; } = 0;
     public double Cooldown { get; private set; } = 0;
     public bool Firing { get; private set; } = false;
 
