@@ -1,62 +1,58 @@
 using Godot;
 using System;
 using System.CodeDom;
+using System.Collections;
+using System.Diagnostics.Eventing.Reader;
 
 public class ColorPalettes : Node
 {
     [Export]
-    public readonly Color Team1PrimaryColor = new Color("3078f3");
-    [Export]
-    public readonly Color Team1SecondaryColor = new Color("1c61d5");
-    [Export]
-    public readonly Color Team1TertiaryColor = new Color("88b4ff");
-    
-    [Export]
-    public readonly Color Team2PrimaryColor = new Color("CC6677");
-    [Export]
-    public readonly Color Team2SecondaryColor = new Color("AA4499");
-    [Export]
-    public readonly Color Team2TertiaryColor = new Color("882255");
+    public readonly Color[,] TeamColors = {
+        { new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }   // Team 0 - Unaffiliated
+        ,{ new Color("3078f3"), new Color("1c61d5"), new Color("88b4ff"), new Color() }  // Team 1 - Blue
+        ,{ new Color("a83e50"), new Color("882255"), new Color("aa4499"), new Color() }  // Tean 2 - Red
+    };
 
     /*
-
+        Colors a shape based on team and color index.
+        Color index is specified via Godot's Group system.
     */
-    public void ApplyPaletteTo( Node node, bool recursive )
+    public void ApplyPaletteTo( Node node, bool recursive = false )
     {
-        switch( node )
+        int colorIndex = -1;
+        if ( node.IsInGroup("ColorPrimary") )
+            colorIndex = 0;
+        else if ( node.IsInGroup("ColorSecondary") )
+            colorIndex = 1;
+        else if ( node.IsInGroup("ColorTertiary") )
+            colorIndex = 2;
+        else if ( node.IsInGroup("ColorQuaternary") )
+            colorIndex = 3;
+        
+        if ( colorIndex >= 0 )
         {
-            case Polygon2D p:
-                Color color;    // CXY, where X is team number and Y is color index
-                switch( node.Name.Substring( node.Name.Length-3 ) )
-                {
-                    case "C11":
-                        color = Team1PrimaryColor;
-                        break;
-                    case "C12":
-                        color = Team1SecondaryColor;
-                        break;
-                    case "C13":
-                        color = Team1TertiaryColor;
-                        break;
-                    case "C21":
-                        color = Team2PrimaryColor;
-                        break;
-                    case "C22":
-                        color = Team2SecondaryColor;
-                        break;
-                    case "C23":
-                        color = Team2TertiaryColor;
-                        break;
-                    default:
-                        color = new Color(1,1,1);
-                        GD.PushError( String.Format("Node '{0}' gave unknown palette code '{1}'", node.Name, node.Name.Substring( node.Name.Length-3 )) );
-                        break;
-                }
-                p.Color = color;
-                break;
+            Color color = TeamColors[ GetTeamOf(node) , colorIndex ];
+            switch( node )
+            {
+                case Polygon2D p:
+                    p.Color = color;
+                    break;
+            }
         }
+        
         if ( recursive )
             foreach( Node n in node.GetChildren() )
                 ApplyPaletteTo( n, true );
+    }
+
+    // Recursively traverses a node's ancestors, checking if any have implemented ITeam.
+    // Returns int of GetTeam() if an ancestor can, otherwise 0.
+    public int GetTeamOf( Node node )
+    {
+        if ( (node as ICanTeam) != null )
+            return (node as ICanTeam).GetTeam();
+        else if ( node == GetNode("/root") || node.GetParent() == null )
+            return 0;
+        else return GetTeamOf( node.GetParent() );
     }
 }

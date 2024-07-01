@@ -38,6 +38,16 @@ public class Spawner : Node2D
     {
         base._Ready();
 
+        // Spawner sets the payload's team based on the team of its parent. Check if the parent implements it.
+        var ParentCanTeam = GetParent() as ICanTeam;
+        if ( ParentCanTeam == null )
+            GD.PushError( String.Format("Node '{0}' does not implement ICanTeam.", this.GetParent().Name) );
+
+        // And check if the payload implements the same interface.
+        var PayloadCanTeam = GetParent() as ICanTeam;
+        if ( PayloadCanTeam == null )
+            GD.PushError( String.Format("Payload '{0}' does not implement ICanTeam.", Payload.ResourceName) );
+
         // Only Node2D inherited nodes can be payloads.
         var PayloadAs2D = Payload.Instance() as Node2D;
         if ( PayloadAs2D == null )
@@ -77,6 +87,7 @@ public class Spawner : Node2D
             var payload = Payload.Instance() as Node2D;
             payload.GlobalPosition = GlobalPosition;
             payload.GlobalRotation = GlobalRotation;
+            (payload as ICanTeam).SetTeam( (GetParent() as ICanTeam).GetTeam() );
             GetNode("/root").AddChild( payload );
 
             Ammo -= AmmoCost;
