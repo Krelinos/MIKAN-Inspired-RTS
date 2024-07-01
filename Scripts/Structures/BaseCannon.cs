@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class BaseCannon : Node2D, ICanTeam
+public class BaseCannon : Node2D, ITeam
 {
     [Export]
     protected int WaveRange = 15;       // Maximum angle in degrees that the cannon
@@ -44,7 +44,7 @@ public class BaseCannon : Node2D, ICanTeam
         RotationDegrees = (float)WaveAngle;
     }
 
-    private void _OnReceiverMarbleReceived( int flags )
+    protected void _OnReceiverMarbleReceived( int flags )
     {
         Spawner.AddAmmo(1);
         Spawner.StartFiring();

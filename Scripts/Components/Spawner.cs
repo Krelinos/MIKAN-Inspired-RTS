@@ -38,13 +38,17 @@ public class Spawner : Node2D
     {
         base._Ready();
 
+        // Check if Payload is null
+        if ( Payload == null )
+            GD.PushError( String.Format("Spawner of node '{0}' does not have a payload.", this.GetParent().Name) );
+
         // Spawner sets the payload's team based on the team of its parent. Check if the parent implements it.
-        var ParentCanTeam = GetParent() as ICanTeam;
+        var ParentCanTeam = GetParent() as ITeam;
         if ( ParentCanTeam == null )
             GD.PushError( String.Format("Node '{0}' does not implement ICanTeam.", this.GetParent().Name) );
 
         // And check if the payload implements the same interface.
-        var PayloadCanTeam = GetParent() as ICanTeam;
+        var PayloadCanTeam = GetParent() as ITeam;
         if ( PayloadCanTeam == null )
             GD.PushError( String.Format("Payload '{0}' does not implement ICanTeam.", Payload.ResourceName) );
 
@@ -87,7 +91,7 @@ public class Spawner : Node2D
             var payload = Payload.Instance() as Node2D;
             payload.GlobalPosition = GlobalPosition;
             payload.GlobalRotation = GlobalRotation;
-            (payload as ICanTeam).SetTeam( (GetParent() as ICanTeam).GetTeam() );
+            (payload as ITeam).SetTeam( (GetParent() as ITeam).GetTeam() );
             GetNode("/root").AddChild( payload );
 
             Ammo -= AmmoCost;

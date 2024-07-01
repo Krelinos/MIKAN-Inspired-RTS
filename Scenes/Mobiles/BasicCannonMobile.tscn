@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://addons/antialiased_line2d/antialiased_regular_polygon2d.gd" type="Script" id=1]
+[ext_resource path="res://Scripts/Components/Spawner.cs" type="Script" id=2]
+[ext_resource path="res://Scripts/Mobiles/BaseMobile.cs" type="Script" id=3]
+[ext_resource path="res://Scenes/Projectiles/BasicBullet.tscn" type="PackedScene" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 8.0
+
+[node name="BasicCannonUnit" type="RigidBody2D"]
+gravity_scale = 0.0
+linear_damp = 2.0
+script = ExtResource( 3 )
+
+[node name="AntialiasedRegularPolygon2D2" type="Polygon2D" parent="." groups=["ColorSecondary"]]
+color = Color( 0.58, 0.58, 0.58, 1 )
+polygon = PoolVector2Array( -3.93403e-07, -9, 6.36396, -6.36396, 9, 0, 6.36396, 6.36396, -3.93403e-07, 9, -6.36396, 6.36396, -9, 1.35896e-06, -6.36396, -6.36396 )
+script = ExtResource( 1 )
+size = Vector2( 18, 18 )
+sides = 8
+stroke_width = 0.0
+
+[node name="AntialiasedRegularPolygon2D" type="Polygon2D" parent="." groups=["ColorPrimary"]]
+color = Color( 0.74, 0.74, 0.74, 1 )
+polygon = PoolVector2Array( -3.0598e-07, -7, 4.94975, -4.94975, 7, 0, 4.94975, 4.94975, -3.0598e-07, 7, -4.94975, 4.94975, -7, 1.05697e-06, -4.94975, -4.94975 )
+script = ExtResource( 1 )
+size = Vector2( 14, 14 )
+sides = 8
+stroke_width = 0.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 1 )
+
+[node name="Spawner" type="Node2D" parent="."]
+position = Vector2( 6, 0 )
+script = ExtResource( 2 )
+Payload = ExtResource( 4 )
+AmmoCost = 0
+
+[node name="Barrel" type="Polygon2D" parent="Spawner" groups=["ColorTertiary"]]
+position = Vector2( -6, 0 )
+color = Color( 0.91, 0.91, 0.91, 1 )
+polygon = PoolVector2Array( 0, -2, 12, -2, 12, 2, 0, 2 )

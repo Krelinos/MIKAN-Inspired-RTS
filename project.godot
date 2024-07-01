@@ -54,6 +54,21 @@ enabled=PoolStringArray( "res://addons/antialiased_line2d/plugin.cfg" )
 
 common/drop_mouse_on_gui_input_disabled=true
 
+[layer_names]
+
+2d_physics/layer_1="Team 0 Marbles"
+2d_physics/layer_2="Team 0 Structures"
+2d_physics/layer_3="Team 0 Mobiles"
+2d_physics/layer_4="Team 0 Projectiles"
+2d_physics/layer_5="Team 1 Marbles"
+2d_physics/layer_6="Team 1 Structures"
+2d_physics/layer_7="Team 1 Mobiles"
+2d_physics/layer_8="Team 1 Projectiles"
+2d_physics/layer_9="Team 2 Marbles"
+2d_physics/layer_10="Team 2 Structures"
+2d_physics/layer_11="Team 2 Mobiles"
+2d_physics/layer_12="Team 2 Projectiles"
+
 [mono]
 
 project/assembly_name="MIKAN-Inspired RTS"
