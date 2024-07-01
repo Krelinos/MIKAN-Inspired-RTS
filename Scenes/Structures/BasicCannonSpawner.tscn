@@ -60,5 +60,7 @@ polygon = PoolVector2Array( -17, -1, 17, -1, 17, 1, -17, 1 )
 position = Vector2( 50, 0 )
 script = ExtResource( 3 )
 Payload = ExtResource( 1 )
+SPM = 10
+AmmoCost = 0
 
 [connection signal="body_entered" from="Receiver" to="Receiver" method="_OnReceiverBodyEntered"]

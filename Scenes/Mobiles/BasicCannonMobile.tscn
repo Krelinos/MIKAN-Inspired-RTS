@@ -2,16 +2,22 @@
 
 [ext_resource path="res://addons/antialiased_line2d/antialiased_regular_polygon2d.gd" type="Script" id=1]
 [ext_resource path="res://Scripts/Components/Spawner.cs" type="Script" id=2]
-[ext_resource path="res://Scripts/Mobiles/BaseMobile.cs" type="Script" id=3]
-[ext_resource path="res://Scenes/Projectiles/BasicBullet.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scripts/Mobiles/Attacker.cs" type="Script" id=3]
+[ext_resource path="res://Scenes/Projectiles/BasicProjectile.tscn" type="PackedScene" id=4]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 8.0
 
-[node name="BasicCannonUnit" type="RigidBody2D"]
+[node name="BasicCannonMobile" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
 gravity_scale = 0.0
-linear_damp = 2.0
+contacts_reported = 1
+contact_monitor = true
+can_sleep = false
+linear_damp = 2.5
 script = ExtResource( 3 )
+InitialVelocity = 150
 
 [node name="AntialiasedRegularPolygon2D2" type="Polygon2D" parent="." groups=["ColorSecondary"]]
 color = Color( 0.58, 0.58, 0.58, 1 )
@@ -30,7 +36,6 @@ sides = 8
 stroke_width = 0.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource( 1 )
 
 [node name="Spawner" type="Node2D" parent="."]

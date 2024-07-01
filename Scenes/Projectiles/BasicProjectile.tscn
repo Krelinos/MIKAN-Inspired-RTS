@@ -2,8 +2,13 @@
 
 [ext_resource path="res://Scripts/Projectiles/BaseProjectile.cs" type="Script" id=1]
 
-[node name="BasicBullet" type="RigidBody2D"]
+[node name="BasicProjectile" type="RigidBody2D"]
+collision_layer = 0
+collision_mask = 0
 gravity_scale = 0.0
+contacts_reported = 1
+contact_monitor = true
+can_sleep = false
 script = ExtResource( 1 )
 
 [node name="Polygon2D" type="Polygon2D" parent="." groups=["ColorTertiary"]]

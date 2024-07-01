@@ -1,24 +1,32 @@
 using Godot;
 using System;
-using System.Threading;
 
 /*
     A Mobile is an entity that acts independently from the team's static structures.
 
-    This BaseMobile charges valiantly/stupidly toward the nearest enemy Mobile or
-    Structure while firing any weapons equipped until it dies or collides with something.
-    BaseMobile inherits from BaseProjectile, so Mobiles are essentially more complex Projectiles.
+    This BaseMobile charges valiantly/stupidly toward the nearest enemy Mobile or Structure
+    while firing any Spawners equipped until it dies or collides with something.
+    
+    Also, BaseMobile inherits from BaseProjectile, so Mobiles are essentially more
+    complex Projectiles.
 */
-public class BaseMobile : BaseProjectile
+public class BaseMobile : BaseProjectile, IHealth
 {
+    [Signal]
+    public delegate void Died();
+
     [Export]
-    public int Speed { get; private set; } = 50;
+    public int MaxHP { get; protected set; } = 5;
+    [Export]
+    public int Speed { get; protected set; } = 50;
+
+    protected int HP;
 
     public override void _Ready()
     {
         base._Ready();
 
-        Initialize();
+        HP = MaxHP;
     }
 
     public override void _PhysicsProcess(float delta)
@@ -28,11 +36,21 @@ public class BaseMobile : BaseProjectile
         ApplyCentralImpulse( new Vector2( (float)Math.Cos(GlobalRotation), (float)Math.Sin(GlobalRotation) ) * Speed * delta );
     }
 
-    // Separated this from _Ready() so that inheriters can safely do base._Ready()
-    // and override initial actions instead of being forced to fire immediately.
-    protected void Initialize()
+    protected override void OnBodyEntered( Node node )
     {
-        foreach ( Node n in GetChildren() )
-            (n as Spawner)?.StartFiring();
+        if ( HP <= 0 )
+        {
+            Die();
+            EmitSignal("Died");
+        }
     }
+
+    protected void Die()
+    {
+        QueueFree();
+    }
+
+    public void SetHealth( int amt ) { HP = amt; }
+    public void AlterHealth( int amt ) { HP += amt; }
+    public int GetHealth() { return HP; }
 }

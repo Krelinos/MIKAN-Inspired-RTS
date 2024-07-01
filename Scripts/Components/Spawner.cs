@@ -95,7 +95,7 @@ public class Spawner : Node2D
             GetNode("/root").AddChild( payload );
 
             Ammo -= AmmoCost;
-            Cooldown = 1 / ( SPM/60 );
+            Cooldown = 1 / ( SPM/60.0 );
             EmitSignal( nameof(Fired) );
             return true;
         }

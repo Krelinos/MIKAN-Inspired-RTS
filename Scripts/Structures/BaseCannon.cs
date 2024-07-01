@@ -32,7 +32,7 @@ public class BaseCannon : Node2D, ITeam
 
         Receiver.Connect( "MarbleReceived", this, nameof(_OnReceiverMarbleReceived) );
 
-        GetNode<ColorPalettes>("/root/ColorPalettes").ApplyPaletteTo( this, true );
+        GetNode<RTSManager>("/root/RTSManager").ApplyPaletteTo( this, true );
     }
 
     public override void _Process(float delta)

@@ -1,17 +1,23 @@
 using Godot;
 using System;
-using System.CodeDom;
-using System.Collections;
-using System.Diagnostics.Eventing.Reader;
 
-public class ColorPalettes : Node
+public class RTSManager : Node
 {
     [Export]
-    public readonly Color[,] TeamColors = {
+    public readonly Color[,] TeamColors =
+    {
         { new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }   // Team 0 - Unaffiliated
         ,{ new Color("3078f3"), new Color("1c61d5"), new Color("88b4ff"), new Color() }  // Team 1 - Blue
         ,{ new Color("a83e50"), new Color("882255"), new Color("ab6da1"), new Color() }  // Tean 2 - Red
     };
+
+    public enum EntityType
+    {
+        Marbles
+        ,Structures
+        ,Mobiles
+        ,Projectiles
+    }
 
     /*
         Colors a shape based on team and color index.
