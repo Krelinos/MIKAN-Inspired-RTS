@@ -1,15 +1,13 @@
 using Godot;
 using System;
 
-public class BaseCannon : Node2D, ITeam
+public class BaseStructure : BaseEntity
 {
     [Export]
     protected int WaveRange = 15;       // Maximum angle in degrees that the cannon
                                         // turns during its sin wave.
     [Export]
     protected int WaveFrequency = 5;    // Number of sin wave cycles per minute.
-    [Export]
-    protected int Team = 0;
 
     protected Receiver Receiver;        // Receiver is expected to emit signals
                                         // when a marble collides with it.
@@ -24,6 +22,9 @@ public class BaseCannon : Node2D, ITeam
 
     public override void _Ready()
     {
+        base._Ready();
+        GetNode<RTSManager>("/root/RTSManager").AssignLayersAndMasks( this, RTSManager.EntityType.Structure, Team );
+
         Receiver = GetNode<Receiver>("Receiver");
         Spawner = GetNode<Spawner>("Spawner");
         Indicator = GetNode<Indicator>("Indicator");
@@ -31,8 +32,8 @@ public class BaseCannon : Node2D, ITeam
         WaveInit = RotationDegrees;
 
         Receiver.Connect( "MarbleReceived", this, nameof(_OnReceiverMarbleReceived) );
-
-        GetNode<RTSManager>("/root/RTSManager").ApplyPaletteTo( this, true );
+        GD.Print( this as ITeam );
+        GD.Print(GetTeam());
     }
 
     public override void _Process(float delta)
@@ -49,7 +50,4 @@ public class BaseCannon : Node2D, ITeam
         Spawner.AddAmmo(1);
         Spawner.StartFiring();
     }
-
-    public int GetTeam() { return Team; }
-    public void SetTeam( int team ) { Team = team; }
 }

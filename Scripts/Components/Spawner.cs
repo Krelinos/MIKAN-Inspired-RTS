@@ -91,7 +91,7 @@ public class Spawner : Node2D
             var payload = Payload.Instance() as Node2D;
             payload.GlobalPosition = GlobalPosition;
             payload.GlobalRotation = GlobalRotation;
-            (payload as ITeam).SetTeam( (GetParent() as ITeam).GetTeam() );
+            (payload as ITeam).SetTeam( GetNode<RTSManager>("/root/RTSManager").GetTeamOf( this ) );
             GetNode("/root").AddChild( payload );
 
             Ammo -= AmmoCost;

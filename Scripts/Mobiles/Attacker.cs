@@ -10,7 +10,7 @@ public class Attacker : BaseMobile
     {
         base._Ready();
 
-        AddToGroup( RTSManager.EntityType.Mobiles.ToString() );
+        AddToGroup( RTSManager.EntityType.Mobile.ToString() );
 
         foreach ( Node n in GetChildren() )
             (n as Spawner)?.StartFiring();
@@ -34,7 +34,7 @@ public class Attacker : BaseMobile
     {
         float nearestDistance = Int32.MaxValue;
         Node2D nearest = null;
-        foreach ( Node n in GetTree().GetNodesInGroup(RTSManager.EntityType.Mobiles.ToString()) )
+        foreach ( Node n in GetTree().GetNodesInGroup(RTSManager.EntityType.Mobile.ToString()) )
             if ( (n as ITeam)?.GetTeam() != Team )
                 {
                     Vector2 offset = (n as Node2D).GlobalPosition - GlobalPosition;

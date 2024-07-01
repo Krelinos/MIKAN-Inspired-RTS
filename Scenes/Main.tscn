@@ -15,10 +15,10 @@ _data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0 ]
 script = ExtResource( 3 )
 
 [node name="Marble" parent="." instance=ExtResource( 1 )]
-position = Vector2( 403, 337 )
+position = Vector2( 28, 310 )
 
 [node name="Marble2" parent="." instance=ExtResource( 1 )]
-position = Vector2( 992, 339 )
+position = Vector2( 1250, 328 )
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2( -36, 42 )
@@ -34,15 +34,14 @@ width = 3.0
 width_curve = SubResource( 2 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( 700, 383 )
+anchor_mode = 0
 current = true
-zoom = Vector2( 0.5, 0.5 )
 
 [node name="BasicCannonSpawner" parent="." instance=ExtResource( 2 )]
-position = Vector2( 404, 381 )
+position = Vector2( 27, 384 )
 Team = 1
 
 [node name="BasicCannonSpawner2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 992, 389 )
+position = Vector2( 1252, 369 )
 rotation = -3.14093
 Team = 2

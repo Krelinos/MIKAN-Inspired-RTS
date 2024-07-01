@@ -8,19 +8,18 @@ using System;
     This BaseProjectile lowers the HP of whatever it hits (assuming
     whatever it hit implemented IHealth) then disappears.
 */
-public class BaseProjectile : RigidBody2D, ITeam
+public class BaseProjectile : BaseEntity
 {
     [Export]
     public int InitialVelocity = 400;   // Velocity when spawned from a Spawner.
     [Export]
     public int CollisionDamage = 1;
 
-    protected int Team = 0;
-
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        GetNode<RTSManager>("/root/RTSManager").ApplyPaletteTo( this, true );
+        base._Ready();
+        GetNode<RTSManager>("/root/RTSManager").AssignLayersAndMasks( this, RTSManager.EntityType.Projectile, Team );
 
         Connect( "body_entered", this, nameof(OnBodyEntered) );
 
@@ -28,7 +27,7 @@ public class BaseProjectile : RigidBody2D, ITeam
         ApplyCentralImpulse( impulse * InitialVelocity );
     }
     
-    protected virtual void DoEffectOn( Node node )
+    protected virtual void DoCollisionEffectOn( Node node )
     {
         if ( (node as IHealth) != null )
             (node as IHealth).AlterHealth(-CollisionDamage);
@@ -36,11 +35,7 @@ public class BaseProjectile : RigidBody2D, ITeam
 
     protected virtual void OnBodyEntered( Node node )
     {
-        GD.Print(node.Name);
-        DoEffectOn( node );
+        DoCollisionEffectOn( node );
         QueueFree();
     }
-
-    public int GetTeam() { return Team; }
-    public void SetTeam( int team ) { Team = team; }
 }
