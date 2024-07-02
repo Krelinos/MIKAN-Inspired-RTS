@@ -34,13 +34,14 @@ public class Attacker : BaseMobile
         if ( Target != null )
         {
             var angleToTarget = GetAngleTo( Target.GlobalPosition );
-            ApplyTorqueImpulse( Math.Sign(angleToTarget) * delta * 100 );
+            ApplyTorqueImpulse( Math.Min( Math.Max(angleToTarget, -1), 1 ) * delta * RotationalSpeed );
         }
 
     }
 
-    protected void TargetDied( bool wasKiller )
+    protected void TargetDied()
     {
+        GD.Print("enemy ded");
         Target = null;
     }
 
@@ -49,7 +50,10 @@ public class Attacker : BaseMobile
         var oldTarget = Target;
         Target = FindNearestEnemy();
         if ( Target != null && oldTarget != Target )
-            Target.Connect( nameof(Died), this, nameof(TargetDied) );
+        {
+            Target.Connect( "Died", this, nameof(TargetDied) );
+            GD.Print("enemy spotted");
+        }
     }
 
     protected Node2D FindNearestEnemy()

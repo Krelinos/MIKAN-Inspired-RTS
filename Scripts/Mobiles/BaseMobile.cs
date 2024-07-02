@@ -20,6 +20,8 @@ public class BaseMobile : BaseProjectile, IHealth
 	public int MaxHP { get; protected set; } = 5;
 	[Export]
 	public int Speed { get; protected set; } = 50;
+	[Export]
+	public int RotationalSpeed { get; private set; } = 200;
 
 	protected int HP;
 
@@ -28,10 +30,12 @@ public class BaseMobile : BaseProjectile, IHealth
 		base._Ready();
 
 		HP = MaxHP;
-		GetNode<RTSManager>("/root/RTSManager").AssignLayersAndMasks( this, RTSManager.EntityType.Mobile, Team );
-		CollisionMask += (uint)0b0100 << Team*4;   // Also collide with friendly Mobiles.
+		
+		RemoveFromGroup( RTSManager.EntityType.Projectile.ToString() );
+        AddToGroup( RTSManager.EntityType.Mobile.ToString() );
 
-		Connect( nameof(HealthChanged), this, nameof(OnHealthChanged) );
+		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Mobile, Team );
+		CollisionMask += (uint)0b0100 << Team*4;   // Also collide with friendly Mobiles.
 	}
 
 	public override void _PhysicsProcess(float delta)
@@ -46,19 +50,25 @@ public class BaseMobile : BaseProjectile, IHealth
 		DoCollisionEffectOn( node );
 	}
 
-	protected virtual void OnHealthChanged( int oldHealth )
-	{
-		if ( HP <= 0 )
-			Die();
-	}
-
 	protected void Die()
 	{
         EmitSignal( nameof(Died) );
 		QueueFree();
 	}
 
-	public void SetHealth( int amt ) { EmitSignal(nameof(HealthChanged), HP); HP = amt; }
-	public void AlterHealth( int amt ) { EmitSignal(nameof(HealthChanged), HP); HP += amt; }
+	public void SetHealth( int amt ) {
+		EmitSignal(nameof(HealthChanged), HP);
+		HP = amt;
+		if ( HP <= 0 )
+			Die();
+	}
+
+	public void AlterHealth( int amt ) {
+		EmitSignal(nameof(HealthChanged), HP);
+		HP += amt;
+		if ( HP <= 0 )
+			Die();
+	}
+
 	public int GetHealth() { return HP; }
 }

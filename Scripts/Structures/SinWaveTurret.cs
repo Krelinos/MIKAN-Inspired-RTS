@@ -12,9 +12,8 @@ public class SinWaveTurret : BaseTurret
     [Export]
     protected int WaveFrequency = 5;    // Number of sin wave cycles per minute.
     [Export]
-    public bool WavePrecise = false;    // A SinWaveTurret that has WavePrecise on 
-                                        // will slow down at the middle and speed up
-                                        // at the edges.
+    public bool WavePrecise = false;    // Having WavePrecise on will slow down the
+                                        // turret at the middle and speed up at the edges.
 
     protected double WaveAngle = 0;
     protected float WaveTime = 0;
@@ -37,10 +36,10 @@ public class SinWaveTurret : BaseTurret
             var x = WaveTime * WaveFrequency/60.0;
             x = 2 * Math.Abs( 2 * (x - Math.Floor(x+0.5) ) ) - 1;   // https://en.wikipedia.org/wiki/Triangle_wave
             x = Math.Asin( x );
-            WaveAngle = WaveRange * x + WaveInit;
+            WaveAngle = x * WaveRange + WaveInit;
         }
         else
-            WaveAngle = WaveRange * Math.Sin( WaveTime * WaveFrequency/60.0 * Math.PI*2 ) + WaveInit;
+            WaveAngle = Math.Sin( WaveTime * WaveFrequency/60.0 * Math.PI*2 ) * WaveRange  + WaveInit;
 
         RotationDegrees = (float)WaveAngle;
     }

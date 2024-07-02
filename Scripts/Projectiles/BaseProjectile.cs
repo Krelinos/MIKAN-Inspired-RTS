@@ -21,7 +21,10 @@ public class BaseProjectile : BaseRTSEntity
     public override void _Ready()
     {
         base._Ready();
-        GetNode<RTSManager>("/root/RTSManager").AssignLayersAndMasks( this, RTSManager.EntityType.Projectile, Team );
+
+        AddToGroup( RTSManager.EntityType.Projectile.ToString() );
+        
+		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Projectile, Team );
 
         Connect( "body_entered", this, nameof(OnBodyEntered) );
 

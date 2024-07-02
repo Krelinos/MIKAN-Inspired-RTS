@@ -9,46 +9,37 @@ public class RTSManager : Node
     [Export]
     public readonly Color[,] TeamColors =
     {
-        { new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }   // Team 0 - Unaffiliated
+        { new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }   // Team 0 - Unaffiliated/Neutral
         ,{ new Color("3078f3"), new Color("1c61d5"), new Color("88b4ff"), new Color() }  // Team 1 - Blue
         ,{ new Color("a83e50"), new Color("882255"), new Color("ab6da1"), new Color() }  // Tean 2 - Red
     };
 
-    public enum EntityType
-    {
-        Marble
-        ,Structure
-        ,Mobile
-        ,Projectile
-    }
+    public enum EntityType { Marble, Structure, Mobile, Projectile }
 
-    public enum ColorCategory
-    {
-        PrimaryColor
-        ,SecondaryColor
-        ,TertiaryColor
-        ,QuaternaryColor
-    }
+    public enum ColorCategory { PrimaryColor, SecondaryColor, TertiaryColor, QuaternaryColor }
 
-    // Recursively traverses a node's ancestors, checking if any have implemented ITeam.
-    // Returns int of GetTeam() if an ancestor can, otherwise 0.
-    public int GetTeamOf( Node node )
+    public enum TeamGroupName { Neutral, Blue, Red }
+
+    /// <summary>
+    /// Recursively traverses a node's ancestors until it finds one that implements ITeam.
+    /// </summary>
+    /// <param name="node">The node to start scanning for ITeam, inclusive.</param>
+    /// <returns>Integer of GetTeam() once it finds an ancestor that implements ITeam, otherwise 0.</returns>
+    public int FindTeamOf( Node node )
     {
         if ( (node as ITeam) != null )
             return (node as ITeam).GetTeam();
         else if ( node == GetNode("/root") || node.GetParent() == null )
             return 0;
-        else return GetTeamOf( node.GetParent() );
+        else return FindTeamOf( node.GetParent() );
     }
 
-    /*
-        Colors Polygon2Ds based on team and color index.
-        Uses a class that implements ITeam to determine team.
-        Color index is specified via Godot's Group system.
-    */
-    public void ApplyPaletteTo( Node node, bool recursive = true )
+    /// <summary>
+    /// Colors Polygon2Ds based on team and color index.
+    /// Color index is specified via Godot's Group system.
+    /// </summary>
+    public void ApplyPaletteTo( Node node, int team, bool recursive = true )
     {
-        int team = GetTeamOf(node);
         int colorIndex = -1;
         
         if ( node.IsInGroup(ColorCategory.PrimaryColor.ToString()) )
@@ -73,7 +64,7 @@ public class RTSManager : Node
         
         if ( recursive )
             foreach( Node n in node.GetChildren() )
-                ApplyPaletteTo( n, true );
+                ApplyPaletteTo( n, team, true );
     }
 
     /// <summary>

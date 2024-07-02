@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public class BaseTurret : BaseRTSEntity
+public class BaseTurret : BaseStructure
 {
     protected List<Receiver> Receivers;     // Receivers are expected to emit signals
                                             // when a marble collides with them.
@@ -13,7 +13,6 @@ public class BaseTurret : BaseRTSEntity
     public override void _Ready()
     {
         base._Ready();
-        GetNode<RTSManager>("/root/RTSManager").AssignLayersAndMasks( this, RTSManager.EntityType.Structure, Team );
 
         Receivers = new List<Receiver>();
         Spawners = new List<Spawner>();
