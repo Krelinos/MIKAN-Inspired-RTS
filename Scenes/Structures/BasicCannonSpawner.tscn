@@ -5,7 +5,7 @@
 [ext_resource path="res://Scripts/Components/Spawner.cs" type="Script" id=3]
 [ext_resource path="res://Scripts/Components/Receiver.cs" type="Script" id=4]
 [ext_resource path="res://Scripts/Components/Indicator.cs" type="Script" id=5]
-[ext_resource path="res://Scripts/Structures/BaseStructure.cs" type="Script" id=6]
+[ext_resource path="res://Scripts/Structures/SinWaveTurret.cs" type="Script" id=6]
 
 [sub_resource type="CircleShape2D" id=4]
 radius = 8.0
@@ -16,6 +16,7 @@ collision_mask = 0
 mode = 1
 gravity_scale = 0.0
 script = ExtResource( 6 )
+WaveFrequency = 20
 
 [node name="Decoration" type="Node2D" parent="."]
 

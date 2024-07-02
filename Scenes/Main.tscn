@@ -45,3 +45,4 @@ Team = 1
 position = Vector2( 1252, 369 )
 rotation = -3.14093
 Team = 2
+WavePrecise = true

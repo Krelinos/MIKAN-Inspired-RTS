@@ -6,6 +6,8 @@ using System;
 */
 public class Attacker : BaseMobile
 {
+    public Node2D Target { get; private set; }
+
     public override void _Ready()
     {
         base._Ready();
@@ -25,9 +27,29 @@ public class Attacker : BaseMobile
         timer.Connect( "timeout", this, nameof(Pursue) );
     }
 
+    public override void _PhysicsProcess(float delta)
+    {
+        base._PhysicsProcess(delta);
+
+        if ( Target != null )
+        {
+            var angleToTarget = GetAngleTo( Target.GlobalPosition );
+            ApplyTorqueImpulse( Math.Sign(angleToTarget) * delta * 100 );
+        }
+
+    }
+
+    protected void TargetDied( bool wasKiller )
+    {
+        Target = null;
+    }
+
     protected void Pursue()
     {
-        LookAt( FindNearestEnemy().GlobalPosition );
+        var oldTarget = Target;
+        Target = FindNearestEnemy();
+        if ( Target != null && oldTarget != Target )
+            Target.Connect( nameof(Died), this, nameof(TargetDied) );
     }
 
     protected Node2D FindNearestEnemy()

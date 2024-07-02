@@ -49,14 +49,12 @@ public class BaseMobile : BaseProjectile, IHealth
 	protected virtual void OnHealthChanged( int oldHealth )
 	{
 		if ( HP <= 0 )
-		{
 			Die();
-			EmitSignal("Died");
-		}
 	}
 
 	protected void Die()
 	{
+        EmitSignal( nameof(Died) );
 		QueueFree();
 	}
 
