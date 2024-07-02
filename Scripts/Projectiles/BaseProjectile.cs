@@ -14,6 +14,8 @@ public class BaseProjectile : BaseRTSEntity
     public int InitialVelocity = 400;   // Velocity when spawned from a Spawner.
     [Export]
     public int CollisionDamage = 1;
+    [Export]
+    public int Lifetime = 5;
     
     protected BaseRTSEntity EntitySpawnedFrom;  // The entity that created this Projectile. ( NOT the entity's Spawner! ) 
 
@@ -30,6 +32,14 @@ public class BaseProjectile : BaseRTSEntity
 
         var impulse = new Vector2( (float)Math.Cos(GlobalRotation), (float)Math.Sin(GlobalRotation) );
         ApplyCentralImpulse( impulse * InitialVelocity );
+
+        if ( Lifetime > 0)
+            GetTree().CreateTimer( Lifetime, false ).Connect( "timeout", this, nameof(Die) );
+    }
+
+    protected void Die()
+    {
+        QueueFree();
     }
     
     protected virtual void DoCollisionEffectOn( Node node )
@@ -41,6 +51,6 @@ public class BaseProjectile : BaseRTSEntity
     protected virtual void OnBodyEntered( Node node )
     {
         DoCollisionEffectOn( node );
-        QueueFree();
+        Die();
     }
 }

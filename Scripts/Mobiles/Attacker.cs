@@ -6,13 +6,15 @@ using System;
 */
 public class Attacker : BaseMobile
 {
-    public Node2D Target { get; private set; }
+    public Vector2 AimPosition { get; private set; }
+    public Vector2 AimPrediction { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
 
-        AddToGroup( RTSManager.EntityType.Mobile.ToString() );
+        AimPosition = GlobalPosition + new Vector2( (float)Math.Cos(GlobalRotation), (float)Math.Sin(GlobalRotation) ) * 1000;
+        AimPrediction = Vector2.Zero;
 
         foreach ( Node n in GetChildren() )
             (n as Spawner)?.StartFiring();
@@ -31,48 +33,20 @@ public class Attacker : BaseMobile
     {
         base._PhysicsProcess(delta);
 
-        if ( Target != null )
-        {
-            var angleToTarget = GetAngleTo( Target.GlobalPosition );
-            ApplyTorqueImpulse( Math.Min( Math.Max(angleToTarget, -1), 1 ) * delta * RotationalSpeed );
-        }
-
-    }
-
-    protected void TargetDied()
-    {
-        GD.Print("enemy ded");
-        Target = null;
+        AimPosition += AimPrediction * delta;
+        var angleToTarget = GetAngleTo( AimPosition );
+        ApplyTorqueImpulse( Math.Min( Math.Max(angleToTarget, -1), 1 ) * delta * RotationalSpeed );
     }
 
     protected void Pursue()
     {
-        var oldTarget = Target;
-        Target = FindNearestEnemy();
-        if ( Target != null && oldTarget != Target )
+        var target = FindNearestEnemy( 0b0110 );
+        if ( target != null )
         {
-            Target.Connect( "Died", this, nameof(TargetDied) );
-            GD.Print("enemy spotted");
+            AimPosition = target.GlobalPosition;
+            AimPrediction = target.LinearVelocity;
         }
     }
 
-    protected Node2D FindNearestEnemy()
-    {
-        float nearestDistance = Int32.MaxValue;
-        Node2D nearest = null;
-        foreach ( Node n in GetTree().GetNodesInGroup(RTSManager.EntityType.Mobile.ToString()) )
-            if ( (n as ITeam)?.GetTeam() != Team )
-                {
-                    Vector2 offset = (n as Node2D).GlobalPosition - GlobalPosition;
-                    float distance = offset.Length();
-
-                    if ( distance < nearestDistance )
-                    {
-                        nearestDistance = distance;
-                        nearest = n as Node2D;
-                    }
-                }
-
-        return nearest;
-    }
+    
 }

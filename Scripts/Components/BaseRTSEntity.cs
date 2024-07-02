@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 /*
     This is the base class of all entities in this RTS.
@@ -23,24 +25,45 @@ public class BaseRTSEntity : RigidBody2D, ITeam
     /// <summary>
     /// 
     /// </summary>
-    /// <param name="bits">The bits</param>
     /// <returns>A BaseRTSEntity matching the specified filters, or null if one cannot be found.</returns>
-    protected BaseRTSEntity FindNearestEnemy( uint bits )
+    protected BaseRTSEntity FindNearestEnemy( byte targetTypes )
     {
-        float nearestDistance = Int32.MaxValue;
-        Node2D nearest = null;
-        foreach ( Node n in GetTree().GetNodesInGroup(RTSManager.EntityType.Mobile.ToString()) )
-            if ( (n as ITeam)?.GetTeam() != Team )
-                {
-                    Vector2 offset = (n as Node2D).GlobalPosition - GlobalPosition;
-                    float distance = offset.Length();
+        var validTargets = new Godot.Collections.Array();
 
-                    if ( distance < nearestDistance )
-                    {
-                        nearestDistance = distance;
-                        nearest = n as Node2D;
-                    }
-                }
+        if ( RTSManager.IsBitSet(targetTypes, (int)RTSManager.EntityType.Marble) )  // Target Marbles
+            foreach ( BaseRTSEntity e in GetTree().GetNodesInGroup(RTSManager.EntityType.Marble.ToString()) )
+                if ( e.Team != Team )
+                    validTargets.Add( e );
+        
+        if ( RTSManager.IsBitSet(targetTypes, (int)RTSManager.EntityType.Structure) )  // Target Structures
+            foreach ( BaseRTSEntity e in GetTree().GetNodesInGroup(RTSManager.EntityType.Structure.ToString()) )
+                if ( e.Team != Team )
+                    validTargets.Add( e );
+
+        if ( RTSManager.IsBitSet(targetTypes, (int)RTSManager.EntityType.Mobile) )  // Target Mobiles
+            foreach ( BaseRTSEntity e in GetTree().GetNodesInGroup(RTSManager.EntityType.Mobile.ToString()) )
+                if ( e.Team != Team )
+                    validTargets.Add( e );
+        
+        if ( RTSManager.IsBitSet(targetTypes, (int)RTSManager.EntityType.Projectile) )  // Target Projectiles
+            foreach ( BaseRTSEntity e in GetTree().GetNodesInGroup(RTSManager.EntityType.Projectile.ToString()) )
+                if ( e.Team != Team )
+                    validTargets.Add( e );
+
+
+        float nearestDistance = Int32.MaxValue;
+        BaseRTSEntity nearest = null;
+        foreach ( BaseRTSEntity e in validTargets )
+        {
+            Vector2 offset = e.GlobalPosition - GlobalPosition;
+            float distance = offset.Length();
+
+            if ( distance < nearestDistance )
+            {
+                nearestDistance = distance;
+                nearest = e;
+            }
+        }
 
         return nearest;
     }

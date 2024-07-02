@@ -16,7 +16,8 @@ collision_mask = 0
 mode = 1
 gravity_scale = 0.0
 script = ExtResource( 6 )
-WaveFrequency = 20
+WaveRange = 45
+WaveFrequency = 10
 
 [node name="Decoration" type="Node2D" parent="."]
 
@@ -65,7 +66,6 @@ polygon = PoolVector2Array( -17, -1, 17, -1, 17, 1, -17, 1 )
 position = Vector2( 50, 0 )
 script = ExtResource( 3 )
 Payload = ExtResource( 1 )
-SPM = 10
 AmmoCost = 0
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

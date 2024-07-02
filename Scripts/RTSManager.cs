@@ -75,7 +75,7 @@ public class RTSManager : Node
     /// just a preset. There can be Projectiles that detect Marbles to destroy
     /// them or Mobiles that exit the Mobile layer temporarily to be intangible.
     /// </summary>
-    public void AssignLayersAndMasks( CollisionObject2D body, EntityType role, int team )
+    public void AssignLayersAndMasks( BaseRTSEntity entity, EntityType role, int team )
     {
         uint layer = 0b0;
         uint mask = 0b0;
@@ -85,7 +85,7 @@ public class RTSManager : Node
             // Marbles exists on the 1st layer and detect Structures.
             case EntityType.Marble:
                 layer = 0b1;
-                mask = 0b10;
+                mask = 0b0010;
                 break;
             // Structures exist on the 2nd layer and detect Mobiles and Projectiles.
             case EntityType.Structure:
@@ -100,11 +100,12 @@ public class RTSManager : Node
             // Projectiles exists on the 4th layer and detect Structures and Mobiles.
             case EntityType.Projectile:
                 layer = 0b1000;
-                mask = 0b110;
+                mask = 0b0110;
                 break;
         }
-
+        
         layer <<= team*4;
+        
         // Mask must detect non-team entities. Apply these bits to the other three teams.
         uint temp = mask;
         mask = 0b0;
@@ -112,7 +113,9 @@ public class RTSManager : Node
             if ( i != team )
                 mask += temp << 4*i;
 
-        body.CollisionLayer = layer;
-        body.CollisionMask = mask;
+        entity.CollisionLayer = layer;
+        entity.CollisionMask = mask;
     }
+
+    public bool IsBitSet(uint b, int pos) { return ((b >> pos) & 1) != 0; }
 }
