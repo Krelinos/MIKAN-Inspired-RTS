@@ -6,16 +6,28 @@ using System.Collections.Generic;
 /*
     This is the base class of all entities in this RTS.
 */
-public class BaseRTSEntity : RigidBody2D, ITeam
+public class BaseRTSEntity : RigidBody2D
 {
+	[Signal]
+	public delegate void HealthChanged();
+	[Signal]
+	public delegate void Died();
+
     [Export]
     protected int Team;
+	[Export]
+	public int MaxHP { get; protected set; } = 5;
+
+	protected int HP;
 
     protected RTSManager RTSManager { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
+
+        HP = MaxHP;
+
         RTSManager = GetNode<RTSManager>("/root/RTSManager");
 
         RTSManager.ApplyPaletteTo( this, Team, true );
@@ -68,6 +80,24 @@ public class BaseRTSEntity : RigidBody2D, ITeam
         return nearest;
     }
 
+    protected virtual void Die()
+	{
+        EmitSignal( nameof(Died) );
+		QueueFree();
+	}
+
     public int GetTeam() { return Team; }
     public void SetTeam( int team ) { Team = team; }
+
+	public void SetHealth( int amt ) {
+		HP = amt;
+		if ( HP <= 0 )
+			Die();
+	}
+	public void AlterHealth( int amt ) {
+		HP += amt;
+		if ( HP <= 0 )
+			Die();
+	}
+	public int GetHealth() { return HP; }
 }

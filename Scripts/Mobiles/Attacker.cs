@@ -21,12 +21,13 @@ public class Attacker : BaseMobile
 
         Timer timer = new Timer
         {
-            WaitTime = 2,
+            WaitTime = 1,
             OneShot = false
         };
         AddChild(timer);
         timer.Start();
         timer.Connect( "timeout", this, nameof(Pursue) );
+        Pursue();
     }
 
     public override void _PhysicsProcess(float delta)

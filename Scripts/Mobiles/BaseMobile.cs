@@ -9,27 +9,16 @@ using System;
 	Also, BaseMobile inherits from BaseProjectile, so Mobiles are essentially more
 	complex Projectiles.
 */
-public class BaseMobile : BaseProjectile, IHealth
+public class BaseMobile : BaseProjectile
 {
-	[Signal]
-	public delegate void HealthChanged();
-	[Signal]
-	public delegate void Died();
-
-	[Export]
-	public int MaxHP { get; protected set; } = 5;
 	[Export]
 	public int Speed { get; protected set; } = 50;
 	[Export]
 	public int RotationalSpeed { get; private set; } = 200;
 
-	protected int HP;
-
 	public override void _Ready()
 	{
 		base._Ready();
-
-		HP = MaxHP;
 		
 		RemoveFromGroup( RTSManager.EntityType.Projectile.ToString() );
         AddToGroup( RTSManager.EntityType.Mobile.ToString() );
@@ -45,30 +34,8 @@ public class BaseMobile : BaseProjectile, IHealth
 		ApplyCentralImpulse( new Vector2( (float)Math.Cos(GlobalRotation), (float)Math.Sin(GlobalRotation) ) * Speed * delta );
 	}
 
-	protected override void OnBodyEntered( Node node )
+	protected override void DoCollisionEffectOn( BaseRTSEntity entity )
 	{
-		DoCollisionEffectOn( node );
+		entity.AlterHealth( -CollisionDamage );
 	}
-
-	protected void Die()
-	{
-        EmitSignal( nameof(Died) );
-		QueueFree();
-	}
-
-	public void SetHealth( int amt ) {
-		EmitSignal(nameof(HealthChanged), HP);
-		HP = amt;
-		if ( HP <= 0 )
-			Die();
-	}
-
-	public void AlterHealth( int amt ) {
-		EmitSignal(nameof(HealthChanged), HP);
-		HP += amt;
-		if ( HP <= 0 )
-			Die();
-	}
-
-	public int GetHealth() { return HP; }
 }

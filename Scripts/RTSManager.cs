@@ -27,8 +27,8 @@ public class RTSManager : Node
     /// <returns>Integer of GetTeam() once it finds an ancestor that implements ITeam, otherwise 0.</returns>
     public int FindTeamOf( Node node )
     {
-        if ( (node as ITeam) != null )
-            return (node as ITeam).GetTeam();
+        if ( (node as BaseRTSEntity) != null )
+            return (node as BaseRTSEntity).GetTeam();
         else if ( node == GetNode("/root") || node.GetParent() == null )
             return 0;
         else return FindTeamOf( node.GetParent() );

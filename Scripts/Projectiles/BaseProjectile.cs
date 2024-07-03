@@ -36,21 +36,17 @@ public class BaseProjectile : BaseRTSEntity
         if ( Lifetime > 0)
             GetTree().CreateTimer( Lifetime, false ).Connect( "timeout", this, nameof(Die) );
     }
-
-    protected void Die()
-    {
-        QueueFree();
-    }
     
-    protected virtual void DoCollisionEffectOn( Node node )
+    protected virtual void DoCollisionEffectOn( BaseRTSEntity entity )
     {
-        if ( (node as IHealth) != null )
-            (node as IHealth).AlterHealth(-CollisionDamage);
+        entity.AlterHealth(-CollisionDamage);
+        Die();
     }
 
     protected virtual void OnBodyEntered( Node node )
     {
-        DoCollisionEffectOn( node );
-        Die();
+        var entity = node as BaseRTSEntity;
+        if ( entity != null && entity.GetTeam() != Team )
+            DoCollisionEffectOn( entity );
     }
 }
