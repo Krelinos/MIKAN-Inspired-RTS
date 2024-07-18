@@ -3,9 +3,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-/*
-    This is the base class of all entities in this RTS.
-*/
+/// <summary>
+/// This is the base class of all entities in this RTS.
+/// </summary>
 public class BaseRTSEntity : RigidBody2D
 {
 	[Signal]
@@ -14,7 +14,7 @@ public class BaseRTSEntity : RigidBody2D
 	public delegate void Died();
 
     [Export]
-    protected int Team;
+    public int Team { get; protected set; }
 	[Export]
 	public int MaxHP { get; protected set; } = 5;
 
@@ -37,8 +37,10 @@ public class BaseRTSEntity : RigidBody2D
     /// <summary>
     /// 
     /// </summary>
+    /// <param name="targetTypes"></param>
+    /// <param name="maxDist"></param>
     /// <returns>A BaseRTSEntity matching the specified filters, or null if one cannot be found.</returns>
-    protected BaseRTSEntity FindNearestEnemy( byte targetTypes )
+    protected BaseRTSEntity FindNearestEnemy( byte targetTypes, int maxDist = Int32.MaxValue )
     {
         var validTargets = new Godot.Collections.Array();
 
@@ -63,7 +65,7 @@ public class BaseRTSEntity : RigidBody2D
                     validTargets.Add( e );
 
 
-        float nearestDistance = Int32.MaxValue;
+        float nearestDistance = maxDist;
         BaseRTSEntity nearest = null;
         foreach ( BaseRTSEntity e in validTargets )
         {
@@ -89,12 +91,12 @@ public class BaseRTSEntity : RigidBody2D
     public int GetTeam() { return Team; }
     public void SetTeam( int team ) { Team = team; }
 
-	public void SetHealth( int amt ) {
+	public virtual void SetHealth( int amt ) {
 		HP = amt;
 		if ( HP <= 0 )
 			Die();
 	}
-	public void AlterHealth( int amt ) {
+	public virtual void AlterHealth( int amt ) {
 		HP += amt;
 		if ( HP <= 0 )
 			Die();

@@ -1,11 +1,10 @@
 using System;
 using Godot;
 
-/*
-    A Spawner handles firing the payload of a cannon. Payloads are PackedScenes
-    declared in the exported variable Payload. It also signals out when it
-    starts and stops firing.
-*/
+/// <summary>
+///    A Spawner handles firing the payload of a cannon. Payloads are PackedScenes
+///    declared in the exported variable Payload.
+/// </summary>
 public class Spawner : Node2D
 {
     [Signal]
@@ -19,24 +18,28 @@ public class Spawner : Node2D
     // could be anything as long as it is a PackedScene; simple bullets to 
     // complex contraptions that even have their own cannons are all valid.
     [Export]
-    public PackedScene Payload { get; private set; }
+    public PackedScene Payload { get; protected set; }
 
     [Export]
-    public int SPM { get; private set; } = 60;      // Shots per minute, assuming this Spawner
+    public int SPM { get; protected set; } = 60;    // Shots per minute, assuming this Spawner
                                                     // will call Fire() multiple times per
                                                     // BeginFiring() call.
     [Export]
-    public int AmmoCost { get; private set; } = 1;  // Amount of ammo deducted per payload spawn.
+    public int AmmoCost { get; protected set; } = 1;  // Amount of ammo deducted per payload spawn.
                                                     // Spawner will emit StoppedFiring when this
                                                     // cost cannot be met.
 
-    public int Ammo { get; private set; } = 0;
-    public double Cooldown { get; private set; } = 0;
-    public bool Firing { get; private set; } = false;
+    public BaseRTSEntity Entity;
+
+    public int Ammo { get; protected set; } = 0;
+    public double Cooldown { get; protected set; } = 0;
+    public bool Firing { get; protected set; } = false;
 
     public override void _Ready()
     {
         base._Ready();
+
+        Entity = GetNode<RTSManager>("/root/RTSManager").FindRTSEntityOf( this );
     }
 
     public override void _Process(float delta)
@@ -72,7 +75,7 @@ public class Spawner : Node2D
             var payload = Payload.Instance() as BaseRTSEntity;
             payload.GlobalPosition = GlobalPosition;
             payload.GlobalRotation = GlobalRotation;
-            payload.SetTeam( GetNode<RTSManager>("/root/RTSManager").FindTeamOf( this ) );
+            payload.SetTeam( Entity.Team );
             GetNode("/root").AddChild( payload );
 
             Ammo -= AmmoCost;

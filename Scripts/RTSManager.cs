@@ -1,9 +1,11 @@
 using Godot;
 using System;
 
-/*
-    A singleton class that houses various RTS-related tools.
-*/
+/// <summary>
+/// A singleton class that houses various RTS-related tools. Ideally, things that
+/// relate more to game management/overseeing go here, while BaseRTSEntity handles
+/// things that involve the BaseRTSEntity itself.
+/// </summary>
 public class RTSManager : Node
 {
     [Export]
@@ -25,13 +27,13 @@ public class RTSManager : Node
     /// </summary>
     /// <param name="node">The node to start scanning for ITeam, inclusive.</param>
     /// <returns>Integer of GetTeam() once it finds an ancestor that implements ITeam, otherwise 0.</returns>
-    public int FindTeamOf( Node node )
+    public BaseRTSEntity FindRTSEntityOf( Node node )
     {
         if ( (node as BaseRTSEntity) != null )
-            return (node as BaseRTSEntity).GetTeam();
+            return node as BaseRTSEntity;
         else if ( node == GetNode("/root") || node.GetParent() == null )
-            return 0;
-        else return FindTeamOf( node.GetParent() );
+            return null;
+        else return FindRTSEntityOf( node.GetParent() );
     }
 
     /// <summary>

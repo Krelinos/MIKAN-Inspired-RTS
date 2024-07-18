@@ -15,7 +15,7 @@ public class BaseProjectile : BaseRTSEntity
     [Export]
     public int CollisionDamage = 1;
     [Export]
-    public int Lifetime = 5;
+    public int Lifetime = 5;            // Projectile will delete itself after Lifetime seconds.
     
     protected BaseRTSEntity EntitySpawnedFrom;  // The entity that created this Projectile. ( NOT the entity's Spawner! ) 
 
