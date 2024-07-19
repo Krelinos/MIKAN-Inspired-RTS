@@ -55,6 +55,7 @@ enabled=PoolStringArray( "res://addons/antialiased_line2d/plugin.cfg" )
 [gui]
 
 common/drop_mouse_on_gui_input_disabled=true
+theme/custom="res://Theme.tres"
 
 [layer_names]
 

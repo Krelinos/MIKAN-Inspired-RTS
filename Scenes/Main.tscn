@@ -39,11 +39,11 @@ anchor_mode = 0
 current = true
 
 [node name="BasicCannonSpawner" parent="." instance=ExtResource( 2 )]
-position = Vector2( 27, 384 )
+position = Vector2( 32, 360 )
 Team = 1
 
 [node name="BasicCannonSpawner2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 1252, 369 )
+position = Vector2( 1248, 360 )
 rotation = -3.14093
 Team = 2
 WavePrecise = true

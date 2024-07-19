@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Globalization;
 
 /// <summary>
 /// An Amplifier is a Structure that provides a multiplicative bonus
@@ -12,11 +13,13 @@ using System;
 /// </summary>
 public class Amplifier : BaseStructure
 {
-    [Export]
-    private PackedScene InitialTurret;
+    [Export] private readonly PackedScene InitialTurret;
+    [Export] public float BonusMultiplier { get; private set; } = 0.1f;
 
     private CollisionShape2D CollisionShape2D;
     private PinJoint2D PinJoint2D;
+    private Label Label;
+
     public BaseMobile Turret { get; private set; }
 
     public override void _Ready()
@@ -25,6 +28,7 @@ public class Amplifier : BaseStructure
 
         CollisionShape2D = GetNode<CollisionShape2D>("CollisionShape2D");
         PinJoint2D = GetNode<PinJoint2D>("PinJoint2D");
+        Label = GetNode<Label>("Visuals/Control/Label");
 
         Turret = InitialTurret.Instance() as BaseMobile;
         if ( Turret == null )
@@ -36,6 +40,9 @@ public class Amplifier : BaseStructure
         }
         
         Connect( "body_entered", this, nameof(OnBodyEntered) );
+        AddToGroup("Amplifier");
+        
+        Label.Text = "+" + Math.Round(BonusMultiplier*100, 1) + "%";
     }
 
     /// <summary>
@@ -46,16 +53,21 @@ public class Amplifier : BaseStructure
     /// <param name="mobile">The mobile to be attached.</param>
     protected void AttachMobileAsTurret( BaseMobile mobile )
     {
+        RemoveFromGroup( ((RTSManager.TeamGroupName)Team).ToString() );
+        RTSManager.RecalcuateAmplifierBonusFor( Team );
+
         Team = mobile.GetTeam();
-        GD.Print(Team);
+        AddToGroup( ((RTSManager.TeamGroupName)Team).ToString() );
+        RTSManager.RecalcuateAmplifierBonusFor( Team );
         RTSManager.ApplyPaletteTo( this, Team, true );
 		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Structure, Team );
 
         mobile.GlobalPosition = GlobalPosition;
-        mobile.LinearVelocity = Vector2.Zero;
+        PinJoint2D.NodeB = PinJoint2D.GetPathTo( mobile );
+        // Make it a Structure so friendly Mobiles can go through it
+		RTSManager.AssignLayersAndMasks( mobile, RTSManager.EntityType.Structure, Team );
         mobile.Connect( "Died", this, nameof(OnTurretDestroyed) );
     
-        PinJoint2D.NodeB = PinJoint2D.GetPathTo( mobile );
         CollisionShape2D.SetDeferred("disabled", true);
     }
 
@@ -67,7 +79,11 @@ public class Amplifier : BaseStructure
 
     protected void OnTurretDestroyed()
     {
+        RemoveFromGroup( ((RTSManager.TeamGroupName)Team).ToString() );
+        RTSManager.RecalcuateAmplifierBonusFor( Team );
         Team = 0;
+        AddToGroup( ((RTSManager.TeamGroupName)Team).ToString() );
+        RTSManager.RecalcuateAmplifierBonusFor( Team );
         RTSManager.ApplyPaletteTo( this, Team, true );
 		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Structure, Team );
 

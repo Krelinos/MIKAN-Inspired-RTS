@@ -22,6 +22,8 @@ public class RTSManager : Node
 
     public enum TeamGroupName { Neutral, Blue, Red }
 
+    public float[] AmplifierBonus { get; private set; } = { 0, 0, 0, 0 };
+
     /// <summary>
     /// Recursively traverses a node's ancestors until it finds one that implements ITeam.
     /// </summary>
@@ -117,6 +119,18 @@ public class RTSManager : Node
 
         entity.CollisionLayer = layer;
         entity.CollisionMask = mask;
+    }
+
+    public float RecalcuateAmplifierBonusFor( int teamIndex )
+    {
+        float total = 0;
+        foreach( Amplifier amp in GetTree().GetNodesInGroup("Amplifier") )
+            if ( amp.GetTeam() == teamIndex )
+                total += amp.BonusMultiplier;
+        
+        AmplifierBonus[ teamIndex ] = total;
+        // GD.Print($"Bonus for {((RTSManager.TeamGroupName)teamIndex).ToString()} is " + total);
+        return total;
     }
 
     public bool IsBitSet(uint b, int pos) { return ((b >> pos) & 1) != 0; }
