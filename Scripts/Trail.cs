@@ -5,13 +5,13 @@ using System.ComponentModel;
 public class Trail : Line2D
 {
     [Export] public int Length { get; private set; } = 16;
-    [Export] public Color StartColor { get; private set; } = new Color(1,1,1);
-    [Export] public Color EndColor { get; private set; } = new Color(0.8f,0.8f,0.8f);
+    public Color StartColor { get; private set; } = new Color(1,1,1);
+    public Color EndColor { get; private set; } = new Color(0.8f,0.8f,0.8f);
 
     private Vector2[] PointsGlobal;
 
     private float TimeSinceLastUpdate = 0f;
-    private const float UpdateIncrementTime = 1/30f;
+    private const float UpdateIncrementTime = 1/15f;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
