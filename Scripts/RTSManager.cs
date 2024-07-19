@@ -16,15 +16,31 @@ public class RTSManager : Node
         { new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }   // Team 0 - Unaffiliated/Neutral
         ,{ new Color("3078f3"), new Color("1c61d5"), new Color("88b4ff"), new Color() }  // Team 1 - Blue
         ,{ new Color("a83e50"), new Color("882255"), new Color("ab6da1"), new Color() }  // Tean 2 - Red
+        ,{ new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }  // Tean 2 - Team 4
     };
 
     public enum EntityType { Marble, Structure, Mobile, Projectile }
 
     public enum ColorCategory { PrimaryColor, SecondaryColor, TertiaryColor, QuaternaryColor }
 
-    public enum TeamGroupName { Neutral, Blue, Red }
+    public enum TeamGroupName { Neutral, Blue, Red, Team4 }
 
-    public float[] AmplifierBonus { get; private set; } = { 0, 0, 0, 0 };
+    public float[] AmplifierBonus { get; private set; } = new float[4];
+
+    public Gradient[] MarbleGradients { get; private set; } = new Gradient[4];
+
+    public override void _Ready()
+    {
+        base._Ready();
+
+        for ( int i = 0; i < 4; i++ )
+        {
+            var gradient = new Gradient();
+            gradient.SetColor( 0, TeamColors[i,0] );
+            gradient.SetColor( 1, TeamColors[i,1] * new Color(1,1,1,0) );
+            MarbleGradients[i] = gradient;
+        }
+    }
 
     /// <summary>
     /// Recursively traverses a node's ancestors until it finds one that implements ITeam.

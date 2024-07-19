@@ -19,7 +19,7 @@ public class Marble : BaseRTSEntity
 		gradient.SetColor(1, MarbleColor * new Color(1, 1, 1, 0));
 
 		//Trail.Gradient.Colors = new Color[] { MarbleOutline, MarbleColor * new Color(1, 1, 1, 0) };
-		Trail.Gradient = gradient;
+		Trail.Gradient = RTSManager.MarbleGradients[Team];
 		Trail.Width = Math.Min( TrailSize.x, TrailSize.y );
 	}
 }
