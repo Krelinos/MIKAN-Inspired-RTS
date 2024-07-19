@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scripts/Trail.cs" type="Script" id=1]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=1]
+
+[node name="Trail" type="Line2D"]
+width_curve = SubResource( 2 )
+gradient = SubResource( 1 )
+script = ExtResource( 1 )
