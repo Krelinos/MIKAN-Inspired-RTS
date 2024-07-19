@@ -8,7 +8,7 @@ using System;
 /// </summary>
 public class RTSManager : Node
 {
-    [Signal] public delegate void AmplifierBonusChanged( int team, float newVal, float oldVal );
+    // [Signal] public delegate void AmplifierBonusChanged( int team, float newVal, float oldVal );
 
     [Export]
     public readonly Color[,] TeamColors =
@@ -149,7 +149,7 @@ public class RTSManager : Node
         var oldVal = AmplifierBonus[ teamIndex ];
         AmplifierBonus[ teamIndex ] = total;
         // GD.Print($"Bonus for {((RTSManager.TeamGroupName)teamIndex).ToString()} is " + total);
-        EmitSignal( nameof(AmplifierBonusChanged), teamIndex, AmplifierBonus[teamIndex], oldVal );
+        // EmitSignal( nameof(AmplifierBonusChanged), teamIndex, AmplifierBonus[teamIndex], oldVal );
 
         return total;
     }

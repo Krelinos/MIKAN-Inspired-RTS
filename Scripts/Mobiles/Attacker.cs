@@ -8,6 +8,7 @@ public class Attacker : BaseMobile
 {
     public Vector2 AimPosition { get; private set; }
     public Vector2 AimPrediction { get; private set; }
+    private BaseRTSEntity Target;    
 
     public override void _Ready()
     {
@@ -41,12 +42,11 @@ public class Attacker : BaseMobile
 
     protected void Pursue()
     {
-        var target = FindNearestEnemy( 0b0110 );
-        if ( target != null )
-        {
-            AimPosition = target.GlobalPosition;
-            AimPrediction = target.LinearVelocity;
-        }
+        if ( Target == null || !IsInstanceValid(Target) || Target.GetTeam() == Team )
+            Target = FindNearestEnemy( 0b0110 );
+        if ( Target != null )
+            AimPosition = Target.GlobalPosition;
+            AimPrediction = Target.LinearVelocity;
     }
 
     
