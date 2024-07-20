@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="CircleShape2D" id=4]
+radius = 1.0
+
+[node name="CrossSpinner" type="StaticBody2D"]
+position = Vector2( 29, 56 )
+
+[node name="PinJoint2D" type="PinJoint2D" parent="."]
+node_a = NodePath("..")
+node_b = NodePath("../Cross")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 4 )
+disabled = true
+
+[node name="Cross" type="RigidBody2D" parent="."]
+
+[node name="Polygon2D" type="Polygon2D" parent="Cross"]
+polygon = PoolVector2Array( -16, -2, 16, -2, 16, 2, -16, 2 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Cross"]
+rotation = 1.5708
+polygon = PoolVector2Array( -16, -2, 16, -2, 16, 2, -16, 2 )
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Cross"]
+polygon = PoolVector2Array( -2, -16, 2, -16, 2, -2, 16, -2, 16, 2, 2, 2, 2, 16, -2, 16, -2, 2, -16, 2, -16, -2, -2, -2 )

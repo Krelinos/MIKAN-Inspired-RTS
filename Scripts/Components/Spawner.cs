@@ -28,6 +28,9 @@ public class Spawner : Node2D
     public int AmmoCost { get; protected set; } = 1;  // Amount of ammo deducted per payload spawn.
                                                     // Spawner will emit StoppedFiring when this
                                                     // cost cannot be met.
+    
+    [Export] public int MuzzleVelocity { get; protected set; } = 200;
+    [Export] public bool ImmediatelyFire { get; protected set; } = false;
 
     public BaseRTSEntity Entity;
 
@@ -40,6 +43,8 @@ public class Spawner : Node2D
         base._Ready();
 
         Entity = GetNode<RTSManager>("/root/RTSManager").FindRTSEntityOf( this );
+
+        if ( ImmediatelyFire ) StartFiring();
     }
 
     public override void _Process(float delta)
@@ -75,6 +80,7 @@ public class Spawner : Node2D
             var payload = Payload.Instance() as BaseRTSEntity;
             payload.GlobalPosition = GlobalPosition;
             payload.GlobalRotation = GlobalRotation;
+            payload.ApplyCentralImpulse( new Vector2( (float)Math.Cos(GlobalRotation), (float)Math.Sin(GlobalRotation) ) * MuzzleVelocity );
             payload.SetTeam( Entity.Team );
             GetNode("/root").AddChild( payload );
 

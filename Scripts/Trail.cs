@@ -11,7 +11,7 @@ public class Trail : Line2D
     private Vector2[] PointsGlobal;
 
     private float TimeSinceLastUpdate = 0f;
-    private const float UpdateIncrementTime = 1/15f;
+    private const float UpdateIncrementTime = 1/20f;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
@@ -23,7 +23,7 @@ public class Trail : Line2D
     }
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(float delta)
+    public override void _PhysicsProcess(float delta)
     {
         TimeSinceLastUpdate += delta;
 
@@ -32,6 +32,7 @@ public class Trail : Line2D
             UpdatePointPositions();
             TimeSinceLastUpdate -= UpdateIncrementTime;
         }
+        AlignPointsToGlobal();
     }
 
     private void UpdatePointPositions()
@@ -44,7 +45,12 @@ public class Trail : Line2D
 
 		PointsGlobal = RShiftedTrail;
 
-		// Then translate the global positions to the trail's local position
+        // Then translate the global positions to the trail's local position
+		AlignPointsToGlobal();
+    }
+
+    private void AlignPointsToGlobal()
+    {
 		var TrailPointsLocal = new Godot.Vector2[ Length ];
 		for( int i = 0; i < Length; i++ )
 			TrailPointsLocal[ i ] = ToLocal( PointsGlobal[ i ] );

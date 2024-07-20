@@ -12,7 +12,7 @@ public class Marble : BaseRTSEntity
 
 		var MarbleColor = GetNode<Polygon2D>("Inline").Color;
 		var MarbleOutline = GetNode<Polygon2D>("Outline").Color;
-		var TrailSize = (Godot.Vector2)GetNode("Outline").Get("size");
+		var TrailSize = (Godot.Vector2)GetNode("Inline").Get("size");
 
 		var gradient = new Gradient();
 		gradient.SetColor(0, MarbleOutline);
