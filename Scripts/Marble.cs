@@ -8,6 +8,10 @@ public class Marble : BaseRTSEntity
 	public override void _Ready()
 	{
 		base._Ready();
+        AddToGroup( RTSManager.EntityType.Marble.ToString() );
+		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Marble, Team );
+		GD.Print("Marble team is " + Team);
+
 		Trail = GetNode<Trail>("Trail");
 
 		var MarbleColor = GetNode<Polygon2D>("Inline").Color;

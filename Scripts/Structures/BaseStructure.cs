@@ -6,10 +6,7 @@ using Godot;
 /// They serve as special game elements such as the Marble distribution system or powerful Core weapons.
 /// </summary>
 public class BaseStructure : BaseRTSEntity
-{
-	[Export]
-	public new int MaxHP { get; protected set; } = -1;
-    
+{   
     public override void _Ready()
     {
 

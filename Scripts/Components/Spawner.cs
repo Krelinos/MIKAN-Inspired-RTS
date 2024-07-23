@@ -43,6 +43,8 @@ public class Spawner : Node2D
         base._Ready();
 
         Entity = GetNode<RTSManager>("/root/RTSManager").FindRTSEntityOf( this );
+        GD.Print( Entity.Name );
+        GD.Print( Entity.GetTeam() );
 
         if ( ImmediatelyFire ) StartFiring();
     }
@@ -56,7 +58,7 @@ public class Spawner : Node2D
         
         if ( Firing && Cooldown <= 0 )
         {
-            Firing = Fire();
+            Firing = FireOnce();
             if ( !Firing )      // Ammo has just ran out.
                 EmitSignal( nameof(StoppedFiring) );
         }
@@ -73,7 +75,7 @@ public class Spawner : Node2D
         }
     }
 
-    private bool Fire()
+    public bool FireOnce()
     {
         if ( Ammo >= AmmoCost )
         {

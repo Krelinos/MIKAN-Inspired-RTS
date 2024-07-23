@@ -13,17 +13,17 @@ public class RTSManager : Node
     [Export]
     public readonly Color[,] TeamColors =
     {
-        { new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }   // Team 0 - Unaffiliated/Neutral
-        ,{ new Color("3078f3"), new Color("1c61d5"), new Color("88b4ff"), new Color() }  // Team 1 - Blue
-        ,{ new Color("a83e50"), new Color("882255"), new Color("ab6da1"), new Color() }  // Tean 2 - Red
-        ,{ new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }  // Tean 2 - Team 4
+        { new Color("3078f3"), new Color("1c61d5"), new Color("88b4ff"), new Color() }   // Team 0 - Blue
+        ,{ new Color("a83e50"), new Color("882255"), new Color("ab6da1"), new Color() }  // Team 1 - Red
+        ,{ new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }  // Team 2 - Unaffiliated/Neutral
+        ,{ new Color("CCCCCC"), new Color("AAAAAA"), new Color("FFFFFF"), new Color() }  // Team 3 - Unused
     };
 
     public enum EntityType { Marble, Structure, Mobile, Projectile }
 
     public enum ColorCategory { PrimaryColor, SecondaryColor, TertiaryColor, QuaternaryColor }
 
-    public enum TeamGroupName { Neutral, Blue, Red, Team4 }
+    public enum TeamGroupName { Blue, Red, Neutral, Team4 }
 
     public float[] AmplifierBonus { get; private set; } = new float[4];
 
@@ -128,12 +128,17 @@ public class RTSManager : Node
         
         layer <<= team*4;
         
-        // Mask must detect non-team entities. Apply these bits to the other three teams.
-        uint temp = mask;
-        mask = 0b0;
-        for ( int i = 0; i < 4; i++ )
-            if ( i != team )
-                mask += temp << 4*i;
+        // Non-Marbles must detect non-team entities. Apply these bits to the other three teams instead.
+        if ( role == EntityType.Marble )
+            mask <<= team*4;
+        else
+        {
+            uint temp = mask;
+            mask = 0b0;
+            for ( int i = 0; i < 4; i++ )
+                if ( i != team )
+                    mask += temp << 4*i;
+        }
 
         entity.CollisionLayer = layer;
         entity.CollisionMask = mask;

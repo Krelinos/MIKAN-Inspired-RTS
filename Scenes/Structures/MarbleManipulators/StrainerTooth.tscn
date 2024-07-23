@@ -2,7 +2,7 @@
 
 [node name="StrainerTooth" type="RigidBody2D"]
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
+[node name="Polygon2D" type="Polygon2D" parent="." groups=["PrimaryColor"]]
 polygon = PoolVector2Array( 0, 0, 2, 3, -2, 3 )
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
