@@ -6,7 +6,9 @@ using Godot;
 /// They serve as special game elements such as the Marble distribution system or powerful Core weapons.
 /// </summary>
 public class BaseStructure : BaseRTSEntity
-{   
+{
+    [Export] public bool Targetable { get; protected set; }
+
     public override void _Ready()
     {
 
