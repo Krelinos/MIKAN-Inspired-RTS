@@ -3,8 +3,8 @@ using System;
 
 public class Core : BaseStructure
 {
-	[Export] private NodePath CorePolygon1Path;
-	[Export] private NodePath CorePolygon2Path;
+	[Export] private readonly NodePath CorePolygon1Path = "";
+	[Export] private readonly NodePath CorePolygon2Path = "";
 
 	private readonly GDScript AntialiasedPolygonScript = (GDScript) GD.Load("res://addons/antialiased_line2d/antialiased_polygon2d.gd");
 	private Node2D CorePolygon1;
@@ -13,6 +13,7 @@ public class Core : BaseStructure
 	public Core()
 	{
 		Targetable = true;
+		MaxHP = 50f;
 	}
 
 	public override void _Ready()
@@ -21,32 +22,34 @@ public class Core : BaseStructure
 
 		CorePolygon1 = GetNode( CorePolygon1Path ) as Node2D;
 		CorePolygon2 = GetNode( CorePolygon2Path ) as Node2D;
-
-		for ( int i = 0; i < 3; i+=2 )
+		
+		for ( int i = 0; i < 4; i++ )
 			for ( int o = 0; o < 8; o++ )
 			{
-				var AAPolygon = CreateAAPolygon();
-					AAPolygon.Set( "polygon", CreatePointsForArcPolygon(45*o, 45*o+45, 9*i+28, 9*i+36, 4) );
-				AddChild( (Node)AAPolygon );
-			}
-		
-		for ( int i = 1; i < 4; i+=2 )
-			for ( int o = 0; o < 8; o++ )
-			{
-				var AAPolygon = CreateAAPolygon();
-					AAPolygon.Set( "polygon", CreatePointsForArcPolygon(45*o+22.5f, 45*o+67.5f, 9*i+28, 9*i+36, 4) );
-				AddChild( (Node)AAPolygon );
-			}
-	}
+				var AAPolygon = (Polygon2D) AntialiasedPolygonScript.New();
+					AAPolygon.Set( "color", RTSManager.TeamColors[Team, 0] );
+					AAPolygon.Set( "stroke_color", RTSManager.TeamColors[Team, 1] );
+					AAPolygon.Set( "stroke_width", 2 );
+					AAPolygon.Set( "polygon", CreatePointsForArcPolygon(45*o+(i%2*22.5f), 45*o+45+(i%2*22.5f), 9*i+28, 9*i+36, 4) );
+				
+				var collision = new CollisionPolygon2D()
+				{
+					Polygon = AAPolygon.Get("polygon") as Vector2[]
+				};
 
-	private Godot.Object CreateAAPolygon()
-	{
-		Godot.Object AAPolygon = (Godot.Object) AntialiasedPolygonScript.New();
-			AAPolygon.Set("stroke_width", 2);
-			AAPolygon.Set("color", RTSManager.TeamColors[Team, 0]);
-			AAPolygon.Set("stroke_color", RTSManager.TeamColors[Team, 1]);
-		
-		return AAPolygon;
+				var rigid = new CoreShieldPiece()
+				{
+					Mode = RigidBody2D.ModeEnum.Kinematic
+					,RotationCoefficent =  i%2 == 0 ? -0.1f : 0.1f
+					,Collision = collision
+					,Polygon = AAPolygon 
+				};
+				rigid.SetTeam( Team );
+
+				rigid.AddChild( (Node)AAPolygon );
+				rigid.AddChild( collision );
+				AddChild( rigid );
+			}
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

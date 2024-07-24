@@ -97,7 +97,7 @@ public class RTSManager : Node
     /// just a preset. There can be Projectiles that detect Marbles to destroy
     /// them or Mobiles that exit the Mobile layer temporarily to be intangible.
     /// </summary>
-    public void AssignLayersAndMasks( BaseRTSEntity entity, EntityType role, int team )
+    public void AssignLayersAndMasks( RigidBody2D entity, EntityType role, int team )
     {
         uint layer = 0b0;
         uint mask = 0b0;

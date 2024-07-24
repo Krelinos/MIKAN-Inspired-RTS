@@ -16,6 +16,11 @@ public class BaseMobile : BaseProjectile
 	[Export]
 	public int RotationalSpeed { get; private set; } = 200;
 
+	public BaseMobile()
+	{
+		Targetable = true;
+	}
+
 	public override void _Ready()
 	{
 		base._Ready();

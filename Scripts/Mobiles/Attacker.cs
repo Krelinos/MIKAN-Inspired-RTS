@@ -45,8 +45,10 @@ public class Attacker : BaseMobile
         if ( Target == null || !IsInstanceValid(Target) || Target.GetTeam() == Team )
             Target = FindNearestEnemy( 0b0110 );
         if ( Target != null )
+        {
             AimPosition = Target.GlobalPosition;
             AimPrediction = Target.LinearVelocity;
+        }
     }
 
     

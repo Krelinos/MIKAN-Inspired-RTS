@@ -7,23 +7,20 @@ using Godot;
 /// </summary>
 public class BaseStructure : BaseRTSEntity
 {
-    [Export] public bool Targetable { get; protected set; }
-
     public override void _Ready()
     {
-
         base._Ready();
         AddToGroup( RTSManager.EntityType.Structure.ToString() );
 
 		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Structure, Team );
     }
 
-    public override void SetHealth( int amt ) {
-		// Nothing.
-	}
-	public override void AlterHealth( int amt ) {
-        // Nothing. Is this a good practice? Silently absorbing the SetHealth
-        // and AlterHealth functions since they do not affect Structures?
-        // Message me if you know, whomever is looking at this code.
-    }
+    // public override void SetHealth( int amt ) {
+	// 	// Nothing.
+	// }
+	// public override void AlterHealth( int amt ) {
+    //     // Nothing. Is this a good practice? Silently absorbing the SetHealth
+    //     // and AlterHealth functions since they do not affect Structures?
+    //     // Message me if you know, whomever is looking at this code.
+    // }
 }

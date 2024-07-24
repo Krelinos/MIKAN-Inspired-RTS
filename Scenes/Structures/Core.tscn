@@ -39,12 +39,4 @@ visible = false
 shape = SubResource( 1 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-current = true
 zoom = Vector2( 0.25, 0.25 )
-
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-mode = 3
-
-[node name="Polygon2D" type="Polygon2D" parent="RigidBody2D"]
-position = Vector2( 59, -13 )
-polygon = PoolVector2Array( 32, -17, 29, -9, 35, -10 )

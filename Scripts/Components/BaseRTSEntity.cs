@@ -16,9 +16,10 @@ public class BaseRTSEntity : RigidBody2D
     [Export]
     public int Team { get; protected set; }
 	[Export]
-	public int MaxHP { get; protected set; } = 5;
+	public float MaxHP { get; protected set; } = 5;
+    [Export] public bool Targetable { get; protected set; }
 
-	protected int HP;
+	protected float HP;
 
     protected RTSManager RTSManager { get; private set; }
 
@@ -51,7 +52,7 @@ public class BaseRTSEntity : RigidBody2D
         
         if ( RTSManager.IsBitSet(targetTypes, (int)RTSManager.EntityType.Structure) )  // Target Structures
             foreach ( BaseRTSEntity e in GetTree().GetNodesInGroup(RTSManager.EntityType.Structure.ToString()) )
-                if ( e.Team != Team )
+                if ( e.Team != Team && e.Targetable )
                     validTargets.Add( e );
 
         if ( RTSManager.IsBitSet(targetTypes, (int)RTSManager.EntityType.Mobile) )  // Target Mobiles
@@ -101,5 +102,5 @@ public class BaseRTSEntity : RigidBody2D
 		if ( HP <= 0 )
 			Die();
 	}
-	public int GetHealth() { return HP; }
+	public float GetHealth() { return HP; }
 }
