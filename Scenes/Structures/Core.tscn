@@ -9,8 +9,10 @@ radius = 24.0
 [node name="Core" type="RigidBody2D"]
 mode = 1
 script = ExtResource( 2 )
+CorePolygon1Path = NodePath("Polygon2D")
+CorePolygon2Path = NodePath("Polygon2D2")
 
-[node name="AntialiasedRegularPolygon2D2" type="Polygon2D" parent="."]
+[node name="AntialiasedRegularPolygon2D2" type="Polygon2D" parent="." groups=["SecondaryColor"]]
 color = Color( 0.698039, 0.698039, 0.698039, 1 )
 polygon = PoolVector2Array( -1.04907e-06, -24, 9.1844, -22.1731, 16.9706, -16.9706, 22.1731, -9.1844, 24, 0, 22.1731, 9.1844, 16.9706, 16.9706, 9.18441, 22.1731, -1.04907e-06, 24, -9.1844, 22.1731, -16.9706, 16.9706, -22.1731, 9.18441, -24, 3.6239e-06, -22.1731, -9.1844, -16.9706, -16.9706, -9.18441, -22.1731 )
 script = ExtResource( 1 )
@@ -18,7 +20,7 @@ size = Vector2( 48, 48 )
 sides = 16
 stroke_width = 0.0
 
-[node name="AntialiasedRegularPolygon2D" type="Polygon2D" parent="."]
+[node name="AntialiasedRegularPolygon2D" type="Polygon2D" parent="." groups=["PrimaryColor"]]
 color = Color( 0.85098, 0.85098, 0.85098, 1 )
 polygon = PoolVector2Array( -8.74228e-07, -20, 7.65367, -18.4776, 14.1421, -14.1421, 18.4776, -7.65367, 20, 0, 18.4776, 7.65367, 14.1421, 14.1421, 7.65367, 18.4776, -8.74228e-07, 20, -7.65367, 18.4776, -14.1421, 14.1421, -18.4776, 7.65367, -20, 3.01992e-06, -18.4776, -7.65367, -14.1421, -14.1421, -7.65367, -18.4776 )
 script = ExtResource( 1 )
@@ -26,13 +28,11 @@ size = Vector2( 40, 40 )
 sides = 16
 stroke_width = 0.0
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-visible = false
-polygon = PoolVector2Array( -8, -8, 8, -8, 8, 8, -8, 8 )
+[node name="Polygon2D" type="Polygon2D" parent="." groups=["TertiaryColor"]]
+polygon = PoolVector2Array( -4, -7, 4, -7, 11, 0, 4, 7, -4, 7, -11, 0 )
 
-[node name="Polygon2D2" type="Polygon2D" parent="."]
-visible = false
-polygon = PoolVector2Array( 0, -16, 10, 0, 0, 16, -10, 0 )
+[node name="Polygon2D2" type="Polygon2D" parent="." groups=["TertiaryColor"]]
+polygon = PoolVector2Array( 0, -16, 7, 0, 0, 16, -7, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -41,3 +41,10 @@ shape = SubResource( 1 )
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.25, 0.25 )
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+mode = 3
+
+[node name="Polygon2D" type="Polygon2D" parent="RigidBody2D"]
+position = Vector2( 59, -13 )
+polygon = PoolVector2Array( 32, -17, 29, -9, 35, -10 )
