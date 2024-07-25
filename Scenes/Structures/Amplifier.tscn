@@ -14,8 +14,7 @@ font_data = ExtResource( 4 )
 extents = Vector2( 20, 20 )
 
 [node name="Amplifier" type="RigidBody2D"]
-mass = 65535.0
-gravity_scale = 0.0
+mode = 3
 contacts_reported = 1
 contact_monitor = true
 can_sleep = false

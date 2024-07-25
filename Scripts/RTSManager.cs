@@ -104,10 +104,10 @@ public class RTSManager : Node
 
         switch( role )
         {
-            // Marbles exists on the 1st layer and detect Structures.
+            // Marbles exists on the 1st layer and detect other Marbles and Structures.
             case EntityType.Marble:
                 layer = 0b1;
-                mask = 0b0010;
+                mask = 0b0011;
                 break;
             // Structures exist on the 2nd layer and detect Mobiles and Projectiles.
             case EntityType.Structure:

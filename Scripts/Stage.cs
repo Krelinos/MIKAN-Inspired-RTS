@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Stage1 : Node2D
+public class Stage : Node2D
 {
     [Export] public int Team { get; private set; }
     public override void _Ready()

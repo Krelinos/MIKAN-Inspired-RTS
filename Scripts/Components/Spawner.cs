@@ -43,8 +43,6 @@ public class Spawner : Node2D
         base._Ready();
 
         Entity = GetNode<RTSManager>("/root/RTSManager").FindRTSEntityOf( this );
-        GD.Print( Entity.Name );
-        GD.Print( Entity.GetTeam() );
 
         if ( ImmediatelyFire ) StartFiring();
     }

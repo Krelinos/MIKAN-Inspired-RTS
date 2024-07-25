@@ -10,7 +10,6 @@ public class Marble : BaseRTSEntity
 		base._Ready();
         AddToGroup( RTSManager.EntityType.Marble.ToString() );
 		RTSManager.AssignLayersAndMasks( this, RTSManager.EntityType.Marble, Team );
-		GD.Print("Marble team is " + Team);
 
 		Trail = GetNode<Trail>("Trail");
 
