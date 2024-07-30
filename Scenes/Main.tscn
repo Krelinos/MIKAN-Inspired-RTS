@@ -8,22 +8,18 @@
 [ext_resource path="res://Scenes/Structures/MarbleManipulators/Stage1.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Structures/Core.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Scripts/Stage.cs" type="Script" id=8]
-
-[sub_resource type="PhysicsMaterial" id=3]
-friction = 0.0
-bounce = 0.35
+[ext_resource path="res://addons/antialiased_line2d/antialiased_regular_polygon2d.gd" type="Script" id=9]
 
 [node name="Main" type="Node2D"]
 script = ExtResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2( -107, 47 )
+position = Vector2( -112, 279 )
 anchor_mode = 0
-current = true
 zoom = Vector2( 0.35, 0.35 )
 
 [node name="Core" parent="." instance=ExtResource( 7 )]
-position = Vector2( 107, 410 )
+position = Vector2( 160, 410 )
 
 [node name="Core2" parent="." instance=ExtResource( 7 )]
 position = Vector2( 1125, 365 )
@@ -33,34 +29,6 @@ Team = 1
 
 [node name="Stage2" type="Node2D" parent="."]
 script = ExtResource( 8 )
-
-[node name="Polygon2D4" type="Polygon2D" parent="Stage2" groups=["PrimaryColor"]]
-position = Vector2( -5, 0 )
-polygon = PoolVector2Array( 0, 100, 5, 100, 5, 203, 0, 203 )
-
-[node name="Polygon2D5" type="Polygon2D" parent="Stage2" groups=["PrimaryColor"]]
-position = Vector2( -10, 103 )
-polygon = PoolVector2Array( 0, 100, 5, 100, 5, 203, 0, 203 )
-
-[node name="Polygon2D6" type="Polygon2D" parent="Stage2" groups=["PrimaryColor"]]
-position = Vector2( -15, 207 )
-polygon = PoolVector2Array( 0, 100, 5, 100, 5, 203, 0, 203 )
-
-[node name="Polygon2D7" type="Polygon2D" parent="Stage2" groups=["PrimaryColor"]]
-position = Vector2( -20, 310 )
-polygon = PoolVector2Array( 0, 100, 5, 100, 5, 203, 0, 203 )
-
-[node name="Polygon2D8" type="Polygon2D" parent="Stage2" groups=["PrimaryColor"]]
-position = Vector2( -25, 414 )
-polygon = PoolVector2Array( 0, 100, 5, 100, 5, 203, 0, 203 )
-
-[node name="Polygon2D9" type="Polygon2D" parent="Stage2" groups=["PrimaryColor"]]
-position = Vector2( -30, 517 )
-polygon = PoolVector2Array( 0, 100, 5, 100, 5, 203, 0, 203 )
-
-[node name="Marble" parent="Stage2" instance=ExtResource( 1 )]
-position = Vector2( 80, 244 )
-physics_material_override = SubResource( 3 )
 
 [node name="Frame" type="RigidBody2D" parent="Stage2"]
 mode = 3
@@ -77,13 +45,25 @@ polygon = PoolVector2Array( 1, 100, 5, 100, -1, 129, -5, 129 )
 position = Vector2( 21, 73 )
 polygon = PoolVector2Array( -5, 56, -1, 56, -1, 566, -5, 566 )
 
-[node name="Polygon2D4" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
+[node name="Polygon2D6" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
 position = Vector2( 10, 602 )
 polygon = PoolVector2Array( -5, 43, -3, 51, 1, 56, 6, 59, 10, 60, 10, 62, -5, 62 )
 
-[node name="Polygon2D5" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
+[node name="Polygon2D7" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
 position = Vector2( 20, 551 )
-polygon = PoolVector2Array( 0, 88, 0, 99, -1, 99, -3, 98, -4, 95, -4, 88 )
+polygon = PoolVector2Array( 0, 88, 0, 100, -2, 99, -3, 98, -4, 95, -4, 88 )
+
+[node name="Polygon2D8" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
+position = Vector2( 25, 588 )
+polygon = PoolVector2Array( -5, 60, 56, 60, 56, 63, -5, 63 )
+
+[node name="Polygon2D9" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
+position = Vector2( 25, 602 )
+polygon = PoolVector2Array( -5, 60, 56, 60, 56, 62, -5, 62 )
+
+[node name="Polygon2D10" type="Polygon2D" parent="Stage2/Frame" groups=["PrimaryColor"]]
+position = Vector2( 25, 586 )
+polygon = PoolVector2Array( -5, 56, -4, 59, -3, 60, -1, 61, 2, 62, -5, 62 )
 
 [node name="Frame2" type="RigidBody2D" parent="Stage2"]
 mode = 3
@@ -95,15 +75,27 @@ polygon = PoolVector2Array( 1, 100, 5, 100, -7, 129, -11, 129 )
 
 [node name="Polygon2D2" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
 position = Vector2( 36, 73 )
-polygon = PoolVector2Array( -5, 56, -1, 56, -1, 436, -5, 436 )
+polygon = PoolVector2Array( -5, 56, -1, 56, -1, 447, -5, 447 )
 
-[node name="Polygon2D3" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
-position = Vector2( 25, 472 )
+[node name="Polygon2D5" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
+position = Vector2( 25, 483 )
 polygon = PoolVector2Array( -5, 43, -3, 51, 1, 56, 6, 59, 10, 60, 10, 62, -5, 62 )
 
-[node name="Polygon2D4" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
-position = Vector2( 35, 421 )
-polygon = PoolVector2Array( 0, 88, 0, 99, -1, 99, -3, 98, -4, 95, -4, 88 )
+[node name="Polygon2D6" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
+position = Vector2( 35, 432 )
+polygon = PoolVector2Array( 0, 88, 0, 100, -2, 99, -3, 98, -4, 95, -4, 88 )
+
+[node name="Polygon2D7" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
+position = Vector2( 40, 469 )
+polygon = PoolVector2Array( -5, 60, 41, 60, 41, 63, -5, 63 )
+
+[node name="Polygon2D8" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
+position = Vector2( 40, 483 )
+polygon = PoolVector2Array( -5, 60, 41, 60, 41, 62, -5, 62 )
+
+[node name="Polygon2D9" type="Polygon2D" parent="Stage2/Frame2" groups=["PrimaryColor"]]
+position = Vector2( 40, 467 )
+polygon = PoolVector2Array( -5, 56, -4, 59, -3, 60, -1, 61, 2, 62, -5, 62 )
 
 [node name="Frame3" type="RigidBody2D" parent="Stage2"]
 position = Vector2( 21, 0 )
@@ -124,7 +116,7 @@ polygon = PoolVector2Array( -5, 43, -3, 51, 1, 56, 6, 59, 10, 60, 10, 62, -5, 62
 
 [node name="Polygon2D4" type="Polygon2D" parent="Stage2/Frame3" groups=["PrimaryColor"]]
 position = Vector2( 29, 305 )
-polygon = PoolVector2Array( 0, 88, 0, 99, -1, 99, -3, 98, -4, 95, -4, 88 )
+polygon = PoolVector2Array( 0, 88, 0, 101, -3, 98, -4, 95, -4, 88 )
 
 [node name="Frame4" type="RigidBody2D" parent="Stage2"]
 position = Vector2( 42, 0 )
@@ -137,15 +129,27 @@ polygon = PoolVector2Array( 1, 100, 5, 100, -19, 131, -23, 131 )
 
 [node name="Polygon2D2" type="Polygon2D" parent="Stage2/Frame4" groups=["PrimaryColor"]]
 position = Vector2( 24, 73 )
-polygon = PoolVector2Array( -5, 58, -1, 58, -1, 185, -5, 185 )
+polygon = PoolVector2Array( -5, 58, -1, 58, -1, 173, -5, 173 )
 
 [node name="Polygon2D3" type="Polygon2D" parent="Stage2/Frame4" groups=["PrimaryColor"]]
-position = Vector2( 13, 221 )
+position = Vector2( 13, 209 )
 polygon = PoolVector2Array( -5, 43, -3, 51, 1, 56, 6, 59, 10, 60, 10, 62, -5, 62 )
 
 [node name="Polygon2D4" type="Polygon2D" parent="Stage2/Frame4" groups=["PrimaryColor"]]
-position = Vector2( 23, 170 )
-polygon = PoolVector2Array( 0, 88, 0, 99, -1, 99, -3, 98, -4, 95, -4, 88 )
+position = Vector2( 23, 158 )
+polygon = PoolVector2Array( 0, 88, 0, 100, -2, 99, -3, 98, -4, 95, -4, 88 )
+
+[node name="Polygon2D5" type="Polygon2D" parent="Stage2/Frame4" groups=["PrimaryColor"]]
+position = Vector2( 28, 195 )
+polygon = PoolVector2Array( -5, 60, 11, 60, 11, 63, -5, 63 )
+
+[node name="Polygon2D6" type="Polygon2D" parent="Stage2/Frame4" groups=["PrimaryColor"]]
+position = Vector2( 28, 209 )
+polygon = PoolVector2Array( -5, 60, 11, 60, 11, 62, -5, 62 )
+
+[node name="Polygon2D7" type="Polygon2D" parent="Stage2/Frame4" groups=["PrimaryColor"]]
+position = Vector2( 28, 193 )
+polygon = PoolVector2Array( -5, 56, -4, 59, -3, 60, -1, 61, 2, 62, -5, 62 )
 
 [node name="Frame5" type="RigidBody2D" parent="Stage2"]
 position = Vector2( 63, 0 )
@@ -169,7 +173,7 @@ position = Vector2( 18, 73 )
 polygon = PoolVector2Array( 0, 88, 0, 99, -1, 99, -3, 98, -5, 95, -5, 88 )
 
 [node name="BasicCannonSpawner" parent="." instance=ExtResource( 2 )]
-position = Vector2( 65, 667 )
+position = Vector2( 123, 663 )
 
 [node name="BasicCannonSpawner2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 1252, 168 )
@@ -204,3 +208,29 @@ Team = 2
 [node name="Amplifier7" parent="." instance=ExtResource( 4 )]
 position = Vector2( 644, 547 )
 Team = 2
+
+[node name="Marble" parent="." instance=ExtResource( 1 )]
+position = Vector2( 66, 264 )
+
+[node name="Shielder" type="Node2D" parent="."]
+position = Vector2( 55, 411 )
+
+[node name="Polygon2D" type="Polygon2D" parent="Shielder" groups=["PrimaryColor"]]
+polygon = PoolVector2Array( -5, -6, -2, -11, 4, -10, 12, -5, 9, 0, -3, 0 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Shielder" groups=["PrimaryColor"]]
+scale = Vector2( 1, -1 )
+polygon = PoolVector2Array( -5, -6, -2, -11, 4, -10, 12, -5, 9, 0, -3, 0 )
+
+[node name="Polygon2D4" type="Polygon2D" parent="Shielder" groups=["PrimaryColor"]]
+polygon = PoolVector2Array( 9, -1, 23, -1, 24, -3, 27, -4, 30, -3, 31, -1, 32, -1, 32, -4, 30, -7, 27, -8, 20, -7, 9, -6 )
+
+[node name="Polygon2D5" type="Polygon2D" parent="Shielder" groups=["PrimaryColor"]]
+scale = Vector2( 1, -1 )
+polygon = PoolVector2Array( 9, -1, 23, -1, 24, -3, 27, -4, 30, -3, 31, -1, 32, -1, 32, -4, 30, -7, 27, -8, 20, -7, 9, -6 )
+
+[node name="AntialiasedRegularPolygon2D" type="Polygon2D" parent="Shielder"]
+polygon = PoolVector2Array( -3.49691e-07, -8, 1.56072, -7.84628, 3.06147, -7.39104, 4.44456, -6.65176, 5.65685, -5.65685, 6.65176, -4.44456, 7.39104, -3.06147, 7.84628, -1.56072, 8, 0, 7.84628, 1.56072, 7.39104, 3.06147, 6.65176, 4.44456, 5.65685, 5.65685, 4.44456, 6.65176, 3.06147, 7.39104, 1.56072, 7.84628, -3.49691e-07, 8, -1.56072, 7.84628, -3.06147, 7.39104, -4.44456, 6.65176, -5.65685, 5.65685, -6.65176, 4.44456, -7.39104, 3.06147, -7.84628, 1.56072, -8, 1.20797e-06, -7.84628, -1.56072, -7.39104, -3.06147, -6.65176, -4.44456, -5.65686, -5.65685, -4.44456, -6.65176, -3.06147, -7.39104, -1.56072, -7.84628 )
+script = ExtResource( 9 )
+size = Vector2( 16, 16 )
+stroke_width = 0.0
